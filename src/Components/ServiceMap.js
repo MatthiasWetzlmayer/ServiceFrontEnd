@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { view } from '@risingstack/react-easy-state';
 
 export class ServiceMap extends Component {
   render() {
@@ -10,4 +11,4 @@ export class ServiceMap extends Component {
   }
 }
 
-export default ServiceMap
+export default view(ServiceMap)
