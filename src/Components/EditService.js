@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { view } from '@risingstack/react-easy-state';
 
 export class EditService extends Component {
   render() {
@@ -10,4 +11,4 @@ export class EditService extends Component {
   }
 }
 
-export default EditService
+export default view(EditService)

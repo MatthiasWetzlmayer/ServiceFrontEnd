@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { view } from '@risingstack/react-easy-state';
 
 export class ServiceView extends Component {
   render() {
@@ -10,4 +11,4 @@ export class ServiceView extends Component {
   }
 }
 
-export default ServiceView
+export default view(ServiceView)

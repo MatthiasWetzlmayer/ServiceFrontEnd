@@ -1,4 +1,4 @@
-export class DataService{
-
+const DataService={
+    
 }
 export default DataService

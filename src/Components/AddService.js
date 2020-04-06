@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
+import { view } from '@risingstack/react-easy-state';
 
 export class AddService extends Component {
   render() {
     return (
       <div>
-        
       </div>
     )
   }
 }
 
-export default AddService
+export default view(AddService)
