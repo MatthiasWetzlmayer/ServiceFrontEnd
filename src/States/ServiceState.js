@@ -10,16 +10,7 @@ const privateVars = {
 const services = store({
     services: [],
     servicesWithCoords: [],
-    employees: [{
-            id: 1,
-            name: "Wetzi"
-        },
-        {
-            id: 2,
-            name: "Mani"
-        },
-
-    ],
+    employees: [],
     serviceToEdit: {},
 
     addService: (serviceDTO) => {
