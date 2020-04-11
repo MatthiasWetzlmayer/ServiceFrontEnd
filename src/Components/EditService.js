@@ -58,12 +58,12 @@ export class EditService extends Component {
             name="address"
             value={state.serviceToEdit.address}
         />
-
+        <br></br>
         <button
             type="submit"
             value="Submit"
             className="button"
-        >Dienst anlegen</button>
+        >Dienst bearbeiten</button>
     </form>
     )
   }
