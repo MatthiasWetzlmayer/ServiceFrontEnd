@@ -12,6 +12,8 @@ const services = store({
     servicesWithCoords: [],
     employees: [],
     serviceToEdit: {},
+    min: 0,
+    max: 0,
 
     addService: (serviceDTO) => {
         var result = dataService.addService(serviceDTO);
@@ -30,13 +32,16 @@ const services = store({
             }
         }
 
-        for (var i = 0; i < privateVars.allServices.length; ++i) {
-            if (privateVars.allServices[i].id === id) {
-                privateVars.allServices[i] = result;
+        for (var j = 0; j < privateVars.allServices.length; ++j) {
+            if (privateVars.allServices[j].id === id) {
+                privateVars.allServices[j] = result;
             }
         }
     },
-    loadServices: (min, max) => {},
+    loadServices: () => {
+        var result = dataService.loadServices(services.min, services.max);
+        services.services = result;
+    },
     loadServicesWithCoords: () => {},
     filterServices: () => {}
 })

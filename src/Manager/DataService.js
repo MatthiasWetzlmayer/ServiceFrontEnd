@@ -26,6 +26,10 @@ const DataService={
             date: serviceDTO.date,
             address: serviceDTO.address
         };
+    },
+
+    loadServices: (min, max) => {
+
     }
 }
 export default DataService

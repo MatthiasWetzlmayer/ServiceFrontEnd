@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { view } from '@risingstack/react-easy-state';
 import state from '../States/ServiceState';
-import App from '../App.css'
+import App from '../App.css';
 
 export class AddService extends Component {
   onSubmit = (e) => {
@@ -55,7 +55,7 @@ export class AddService extends Component {
             type="text"
             name="address"
         />
-
+        <br/>
         <button
             type="submit"
             value="Submit"
