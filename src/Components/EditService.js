@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { view } from '@risingstack/react-easy-state';
-import state from '../States/ServiceState';
-import App from '../App.css'
+import services from '../States/ServiceState';
+import App from '../App.css';
 
 export class EditService extends Component {
   onSubmit = (e) => {
@@ -13,7 +13,7 @@ export class EditService extends Component {
       date: e.target.date.value,
       address: e.target.address.value
   };
-  state.editService(serviceDTO);
+  services.editService(serviceDTO);
   }
 
   render() {
@@ -24,9 +24,9 @@ export class EditService extends Component {
             id="name"
             type="text"
             name="name"
-            value={state.serviceToEdit.name}
-        />
-
+            defaultValue={services.serviceToEdit.name}
+        ></input>
+        
         <br/>
 
         <label for="employee">Mitarbeiter: </label>
@@ -34,8 +34,13 @@ export class EditService extends Component {
             id="employee"
             name="employee"
             className="dropdown"
-        >{state.employees.map(employee => {
+        >{services.employees.map(employee => {
+          if(employee.name === services.serviceToEdit.name){
+            return (<option selected="selected" value={employee.id}>{employee.name}</option>)
+          }
+          else{
             return (<option value={employee.id}>{employee.name}</option>);
+          }
           })}
         </select>
 
@@ -46,8 +51,8 @@ export class EditService extends Component {
             id="date"
             type="text"
             name="date"
-            value={state.serviceToEdit.date}
-        />
+            defaultValue={services.serviceToEdit.date}
+        ></input>
 
         <br/>
         
@@ -56,9 +61,11 @@ export class EditService extends Component {
             id="address"
             type="text"
             name="address"
-            value={state.serviceToEdit.address}
-        />
+            defaultValue={services.serviceToEdit.address}
+        ></input>
+        
         <br></br>
+
         <button
             type="submit"
             value="Submit"

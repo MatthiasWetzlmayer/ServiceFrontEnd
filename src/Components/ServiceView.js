@@ -110,7 +110,7 @@ export class ServiceView extends Component {
           
         </header>
         <br></br>
-        <br></br>
+        <ServiceTable></ServiceTable>
         <br></br>
         <footer style={footerStyle}>
           <div style={textStyle}>Showing</div>
@@ -136,7 +136,7 @@ export class ServiceView extends Component {
                 disabled = {services.min == 1}
                 >Previous
                 </button>
-    <div id="pageNr" style={textStyle}>{this.state.pageNr}</div>
+              <div id="pageNr" style={textStyle}>{this.state.pageNr}</div>
               <button
                 id="next"
                 onClick={this.nextButtonClicked} 
