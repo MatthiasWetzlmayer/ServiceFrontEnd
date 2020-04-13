@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { view } from '@risingstack/react-easy-state';
 import EmployeeTable from './EmployeeTable';
-import employees from '../States/EmployeeState';
+import employeeState from '../States/EmployeeState';
 import App from '../App.css';
 
 export class EmployeeView extends Component {
@@ -11,50 +11,50 @@ export class EmployeeView extends Component {
   }
 
   componentDidMount() {
-    employees.initalize();
-    employees.min = 1;
-    employees.showEntries = document.getElementById("entries").value;
-    employees.loadEmployees();
-    employees.max = employees.showEntries;
+    employeeState.initalize();
+    employeeState.min = 1;
+    employeeState.showEntries = document.getElementById("entries").value;
+    employeeState.loadEmployees();
+    employeeState.max = employeeState.showEntries;
   }
 
   selectionChanged = (e) => {
     e.preventDefault();
-    employees.showEntries = e.target.value;
-    employees.min = 1;
-    employees.max = employees.showEntries;
-    employees.loadEmployees();
+    employeeState.showEntries = e.target.value;
+    employeeState.min = 1;
+    employeeState.max = employeeState.showEntries;
+    employeeState.loadEmployees();
     this.setState({ pageNr: 1 });
   }
 
   searchChanged = (e) => {
     e.preventDefault();
-    employees.filterEmployees(e.target.value);
+    employeeState.filterEmployees(e.target.value);
   }
 
   nextButtonClicked = (e) => {
     e.preventDefault();
-    employees.min = parseInt(employees.min) + parseInt(employees.showEntries);
-    employees.max = parseInt(employees.max) + parseInt(employees.showEntries);
-    employees.loadEmployees();
+    employeeState.min = parseInt(employeeState.min) + parseInt(employeeState.showEntries);
+    employeeState.max = parseInt(employeeState.max) + parseInt(employeeState.showEntries);
+    employeeState.loadEmployees();
     this.setState({ pageNr: this.state.pageNr + 1 });
   }
 
   previousButtonClicked = (e) => {
     e.preventDefault();
-    if (employees.max == employees.nrAllEmployees) {
-      employees.max = parseInt(employees.max) - parseInt(employees.nrAllEmployees % employees.showEntries)
+    if (employeeState.max == employeeState.nrAllEmployees) {
+      employeeState.max = parseInt(employeeState.max) - parseInt(employeeState.nrAllEmployees % employeeState.showEntries)
     }
     else {
-      employees.max = parseInt(employees.max) - parseInt(employees.showEntries);
+      employeeState.max = parseInt(employeeState.max) - parseInt(employeeState.showEntries);
     }
-    employees.min = parseInt(employees.min) - parseInt(employees.showEntries);
-    employees.loadEmployees();
+    employeeState.min = parseInt(employeeState.min) - parseInt(employeeState.showEntries);
+    employeeState.loadEmployees();
     this.setState({ pageNr: this.state.pageNr - 1 });
   }
 
   addEmployee = () => {
-    employees.showAddEmployee = !employees.showAddEmployee;
+    employeeState.showAddEmployee = !employeeState.showAddEmployee;
   }
 
   render() {
@@ -81,7 +81,7 @@ export class EmployeeView extends Component {
             style={specialButtonStyle}
             onClick={this.addEmployee}
             className="button">
-            {employees.showAddEmployee ? "Mitarbeiter anlegen abbrechen" : "Mitarbeiter anlegen"}
+            {employeeState.showAddEmployee ? "Mitarbeiter anlegen abbrechen" : "Mitarbeiter anlegen"}
           </button>
 
           <div style={rightStyle}>
@@ -95,22 +95,20 @@ export class EmployeeView extends Component {
           </div>
 
         </header>
-        <br></br>
-        <br></br>
-        <br></br>
+        <EmployeeTable employees={employeeState.employees}></EmployeeTable>
         <footer style={footerStyle}>
           <div style={textStyle}>Showing</div>
-          <div>{employees.min}</div>
+          <div>{employeeState.min}</div>
           <div style={textStyle}>to</div>
-          <div>{employees.max}</div>
+          <div>{employeeState.max}</div>
           <div style={textStyle}>of</div>
-          <div>{employees.nrAllEmployees}</div>
+          <div>{employeeState.nrAllEmployees}</div>
           <div style={textStyle}>entries</div>
 
           <div style={footerRightStyle}>
-            <button id="previous" disabled={employees.min == 1} className={employees.min == 1 ? "button disabled" : "button"} onClick={this.previousButtonClicked}>Previous</button>
+            <button id="previous" disabled={employeeState.min == 1} className={employeeState.min == 1 ? "button disabled" : "button"} onClick={this.previousButtonClicked}>Previous</button>
             <div id="pageNr" style={textStyle}>{this.state.pageNr}</div>
-            <button id="next" disabled={employees.max == employees.nrAllEmployees} className={employees.max == employees.nrAllEmployees ? "button disabled" : "button"} onClick={this.nextButtonClicked}>Next</button>
+            <button id="next" disabled={employeeState.max == employeeState.nrAllEmployees} className={employeeState.max == employeeState.nrAllEmployees ? "button disabled" : "button"} onClick={this.nextButtonClicked}>Next</button>
           </div>
         </footer>
       </div>

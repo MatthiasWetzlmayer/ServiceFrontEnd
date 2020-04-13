@@ -7,7 +7,7 @@ const privateVars = {
     allEmployees: [],
 }
 
-const employees = store({
+const employeeState = store({
     employees: [],
     employeeToEdit: {},
     min: 0,
@@ -20,28 +20,28 @@ const employees = store({
     setEmployeeToEdit: () => { },
     editEmployee: () => { },
     loadEmployees: () => {
-        var result = dataService.loadEmployees(employees.min, employees.max);
-        employees.employees = result;
-        if (employees.max > employees.employees.length || employees.max == "null") {
-            employees.max = employees.employees.length;
+        var result = dataService.loadEmployees(employeeState.min, employeeState.max);
+        employeeState.employees = result;
+        if (employeeState.max > employeeState.employees.length || employeeState.max == "null") {
+            employeeState.max = employeeState.employees.length;
         }
     },
     filterEmployees: (searchString) => {
         if (privateVars.allEmployees === null) {
-            privateVars.allEmployees = employees.employees;
+            privateVars.allEmployees = employeeState.employees;
         }
         if (searchString.length < 1) {
-            employees.employees = privateVars.allEmployees;
+            employeeState.employees = privateVars.allEmployees;
             privateVars.allEmployees = null;
         }
         else {
-            employees.employees = employees.employees.filter(x => x.name.startsWith(searchString));
+            employeeState.employees = employeeState.employees.filter(x => x.name.startsWith(searchString));
         }
     },
 
     initalize: () => {
         var result = dataService.size();
-        employees.nrAllEmployees = result;
+        employeeState.nrAllEmployees = result;
     },
 });
-export default employees
+export default employeeState
