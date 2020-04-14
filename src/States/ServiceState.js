@@ -8,27 +8,10 @@ const privateVars = {
 }
 
 const services = store({
-    services: [{
-        id: 1,
-        name: "Wetzi",
-        date: "12.04",
-        address: "Wetzistrase 1"
-    }],
+    services: [],
     servicesWithCoords: [],
-    employees: [{
-        id: 1,
-        name: "Riffi"
-    },
-    {
-        id: 2,
-        name: "Mani"
-    }],
-    serviceToEdit: {
-        id: 1,
-        name: "Wetzi",
-        date: "12.04",
-        address: "Wetzistrase 1"
-    },
+    employees: [],
+    serviceToEdit: {},
     min: 0,
     max: 0,
     showEntries: 0,
