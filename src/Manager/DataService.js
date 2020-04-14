@@ -26,6 +26,40 @@ const DataService={
             date: serviceDTO.date,
             address: serviceDTO.address
         };
+    },
+
+    loadEmployees: (min, max) => {
+        return [
+            {
+                id: 1,
+                name: "Wetzi",
+                address: "Test"
+            },
+            {
+                id: 2,
+                name: "Mani",
+                address: "Test"
+            },
+            {
+                id: 3,
+                name: "Riffi",
+                address: "Test"
+            },
+            {
+                id: 4,
+                name: "Mani",
+                address: "Test"
+            },
+            {
+                id: 5,
+                name: "Mani",
+                address: "Test"
+            },
+        ]
+    },
+
+    size: () => {
+        return 5;
     }
 }
 export default DataService
