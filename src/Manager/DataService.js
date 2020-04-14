@@ -1,4 +1,7 @@
 const DataService={
+    deleteService:(service)=>{
+        return service;
+    },
     addService: (serviceDTO) => {
         //TODO addService Request
 
@@ -16,6 +19,8 @@ const DataService={
     },
 
     editService: (id, serviceDTO) => {
+        //TODO editService Request
+
         
         return {
             id: id,
@@ -43,6 +48,17 @@ const DataService={
             name: employeeDTO.name,
             address: employeeDTO.address
         };
+
+    },
+    loadServices: (min, max) => {
+       return []
+    },
+    loadEmployees: (min, max) => {
+        return []
+    },
+
+    size: () => {
+        return 5;
     }
 }
 export default DataService
