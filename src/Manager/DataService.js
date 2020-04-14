@@ -16,8 +16,6 @@ const DataService={
     },
 
     editService: (id, serviceDTO) => {
-        //TODO editService Request
-        var obj = JSON.parse(serviceDTO);
         
         return {
             id: id,
@@ -25,6 +23,25 @@ const DataService={
             employeeId: serviceDTO.employeeId,
             date: serviceDTO.date,
             address: serviceDTO.address
+        };
+    },
+
+    addEmployee: (employeeDTO) => {
+        console.log(employeeDTO);
+
+        return {
+            id: 1,
+            name: employeeDTO.name,
+            address: employeeDTO.address
+        };
+    },
+
+    editEmployee: (id, employeeDTO) => {
+        
+        return {
+            id: id,
+            name: employeeDTO.name,
+            address: employeeDTO.address
         };
     }
 }
