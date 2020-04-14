@@ -20,6 +20,7 @@ const DataService={
 
     editService: (id, serviceDTO) => {
         //TODO editService Request
+
         
         return {
             id: id,
@@ -30,7 +31,25 @@ const DataService={
         };
     },
 
+    addEmployee: (employeeDTO) => {
+        console.log(employeeDTO);
 
+        return {
+            id: 1,
+            name: employeeDTO.name,
+            address: employeeDTO.address
+        };
+    },
+
+    editEmployee: (id, employeeDTO) => {
+        
+        return {
+            id: id,
+            name: employeeDTO.name,
+            address: employeeDTO.address
+        };
+
+    },
     loadServices: (min, max) => {
        return []
     },
