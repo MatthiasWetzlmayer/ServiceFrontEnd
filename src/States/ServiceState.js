@@ -1,7 +1,7 @@
 import {
     store
 } from '@risingstack/react-easy-state';
-import dataService from '../Manager/DataService';
+import DataService from '../Manager/DataService';
 
 const privateVars = {
     allServices: [],
@@ -21,23 +21,29 @@ const services = store({
     showOnMap: false,
 
     initalize: () => {
-        var result = dataService.size();
+        var result = DataService.size();
         services.nrAllServices = result;
     },
 
     addService: (serviceDTO) => {
-        var result = dataService.addService(serviceDTO);
+        var result = DataService.addService(serviceDTO);
         services.services = [...services.services, result];
         privateVars.allServices = [...privateVars.allServices, result];
     
+    },
+    setServiceToEdit:(service)=>{
+        services.serviceToEdit=service;
+    },
+    deleteService:(service)=>{
+        services.services=services.services.filter(x=>x.id!==DataService.deleteService(service).id)
+
         console.log("Services:" + services.services[0]);
         console.log("Services In All Servies:" + privateVars.allServices[0]);
     
         services.showAddService = false;
     },
-    deleteService: () => {},
     editService: (serviceDTO) => {
-        var result = dataService.editService(services.serviceToEdit.id, serviceDTO);
+        var result = DataService.editService(services.serviceToEdit.id, serviceDTO);
         console.log(result);
         for (var i = 0; i < services.services.length; ++i) {
             if (services.services[i].id === services.serviceToEdit.id) {
@@ -53,7 +59,7 @@ const services = store({
         console.log(services.services);
     },
     loadServices: () => {
-        var result = dataService.loadServices(services.min, services.max);
+        var result = DataService.loadServices(services.min, services.max);
         services.services = result;
         if(services.max > services.services.length || services.max == "null"){
             services.max = services.services.length;

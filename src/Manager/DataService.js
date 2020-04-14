@@ -1,4 +1,7 @@
 const DataService={
+    deleteService:(service)=>{
+        return service;
+    },
     addService: (serviceDTO) => {
         //TODO addService Request
 
