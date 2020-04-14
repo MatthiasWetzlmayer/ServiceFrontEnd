@@ -10,7 +10,7 @@ body {
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+    /* display: inline-block; */
     font-size: 16px;
     border-radius: 4px;
 }
@@ -62,14 +62,20 @@ table {
   .dropdown:hover .dropbtn {background-color: rgb(104, 104, 104);}
 
   input[type=text], select {
-    width: 100%;
+    /* width: 100%; */
     padding: 12px 20px;
     margin: 8px 0;
-    display: inline-block;
+    /* display: inline-block; */
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
   }
+
+  .disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
   
   /* input[type=submit] {
     width: 100%;
@@ -95,3 +101,4 @@ table {
   fieldset {
       border: none;
   }
+

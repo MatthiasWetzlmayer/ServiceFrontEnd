@@ -17,7 +17,6 @@ const DataService={
 
     editService: (id, serviceDTO) => {
         //TODO editService Request
-        var obj = JSON.parse(serviceDTO);
         
         return {
             id: id,
@@ -28,34 +27,12 @@ const DataService={
         };
     },
 
+
+    loadServices: (min, max) => {
+       return []
+    },
     loadEmployees: (min, max) => {
-        return [
-            {
-                id: 1,
-                name: "Wetzi",
-                address: "Test"
-            },
-            {
-                id: 2,
-                name: "Mani",
-                address: "Test"
-            },
-            {
-                id: 3,
-                name: "Riffi",
-                address: "Test"
-            },
-            {
-                id: 4,
-                name: "Mani",
-                address: "Test"
-            },
-            {
-                id: 5,
-                name: "Mani",
-                address: "Test"
-            },
-        ]
+        return []
     },
 
     size: () => {

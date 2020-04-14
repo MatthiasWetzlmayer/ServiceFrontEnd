@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { view } from '@risingstack/react-easy-state';
 import state from '../States/ServiceState';
-import App from '../App.css'
+import App from '../App.css';
 
 export class AddService extends Component {
   onSubmit = (e) => {
     e.preventDefault();
+
+    console.log(e.target);
 
     var serviceDTO = {
       name: e.target.name.value,
@@ -55,7 +57,7 @@ export class AddService extends Component {
             type="text"
             name="address"
         />
-
+        <br/>
         <button
             type="submit"
             value="Submit"
