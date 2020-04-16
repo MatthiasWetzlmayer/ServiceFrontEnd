@@ -51,14 +51,69 @@ const DataService={
 
     },
     loadServices: (min, max) => {
-       return []
+       return [{
+        id: "1",
+        name: "Putzen",
+        employee: {
+            id: 1,
+            name: "Wetzi",
+            address: "ABC"
+        },
+        date: "26.02.2020 20:20",
+        address: "Wetzi-Straße 5",
+        lat: "13",
+        lon: "48"
+
+        },
+        {
+            id: "3",
+            name: "Müll",
+            employee: {
+                id: 1,
+                name: "Wetzi",
+                address: "ABC"
+            },
+            date: "26.02.2020 20:20",
+            address: "Wetzi-Straße 5",
+            lat: "13",
+            lon: "48"
+    
+            },
+            {
+                id: "4",
+                name: "Spüli",
+                employee: {
+                    id: 1,
+                    name: "Wetzi",
+                    address: "ABC"
+                },
+                date: "26.02.2020 20:20",
+                address: "Wetzi-Straße 5",
+                lat: "13",
+                lon: "48"
+        
+                },
+        {
+        id: "2",
+        name: "Waschen",
+        employee: {
+            id: 1,
+            name: "Wetzi",
+            address: "ABC"
+        },
+        date: "26.02.2020 20:20",
+        address: "Wetzi-Straße 5",
+        lat: "13",
+        lon: "48"
+
+    }];
     },
     loadEmployees: (min, max) => {
-        return []
+        return [];
     },
 
     size: () => {
-        return 5;
+        return 2;
     }
 }
 export default DataService

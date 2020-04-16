@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { view } from '@risingstack/react-easy-state';
 import ServiceTable from './ServiceTable';
-import state from '../States/ServiceState';
 import App from '../App.css';
 import services from '../States/ServiceState';
 
@@ -22,9 +21,10 @@ export class ServiceView extends Component {
   selectionChanged = (e) => {
     e.preventDefault();
     services.showEntries = e.target.value;
-    
     services.min = 1;
-    services.max = services.showEntries;
+    console.log("Min: " + services.min);
+    services.max = e.target.value;
+    console.log("Max: " + services.max);
     services.loadServices();
 
     this.setState({pageNr:  1});
@@ -71,17 +71,16 @@ export class ServiceView extends Component {
   render() {
     return (
       <div >
-        <header style={headerStyle}>
+        <header>
         
-            <div style={textStyle}>Show</div>    
+            <div className="textStyle">Show</div>    
             <div>
               <select 
                 name="entries"
                 id="entries"
-                selectedIndex={state.optionIndex}
                 //options={state.options}
                 onChange={this.selectionChanged} 
-                style={colorStyle}>
+                className="colorStyle">
                 <option value="2">2</option>
                 <option value="5">5</option>
                 <option value="10">10</option>
@@ -89,46 +88,45 @@ export class ServiceView extends Component {
                 <option value="null">All</option>
               </select>
             </div>
-            <div style={textStyle}>entries</div>
+            <div className="textStyle">entries</div>
 
             <button 
-            style={specialButtonStyle}
+            className="button specialButtonStyle"
             onClick={this.addService} 
-            className="button">
+            >
               {services.showAddService ? "Dienst anlegen abbrechen" : "Dienst anlegen"}
             </button>
 
-            <div style={rightStyle}>
+            <div className="rightStyle">
               <label for="search">Search: </label>
               <input 
                 name="search"
                 id="search" 
                 type="text" 
-                style={colorStyle}
+                className="colorStyle"
                 onChange={this.searchChanged}></input>
             </div>
           
         </header>
         <br></br>
-        <ServiceTable></ServiceTable>
+        <ServiceTable services={services.services}></ServiceTable>
         <br></br>
-        <footer style={footerStyle}>
-          <div style={textStyle}>Showing</div>
+        <footer>
+          <div className="textStyle">Showing</div>
           <div>{services.min}</div>
-          <div style={textStyle}>to</div>
+          <div className="textStyle">to</div>
           <div>{services.max}</div>
-          <div style={textStyle}>of</div>
+          <div className="textStyle">of</div>
           <div>{services.nrAllServices}</div>
-          <div style={textStyle}>entries</div>
+          <div className="textStyle">entries</div>
 
           <button 
-          style={specialButtonStyle}
-          className="button" 
+          className="button specialButtonStyle" 
           onClick= {this.showOnMap}>
             {services.showOnMap ? "Nicht mehr anzeigen" : "Auf Karte anzeigen" }
           </button>
 
-          <div style={footerRightStyle}>
+          <div className="footerRightStyle">
               <button 
                 id="previous"
                 onClick={this.previousButtonClicked}
@@ -136,7 +134,7 @@ export class ServiceView extends Component {
                 disabled = {services.min == 1}
                 >Previous
                 </button>
-              <div id="pageNr" style={textStyle}>{this.state.pageNr}</div>
+              <div id="pageNr" className="textStyle">{this.state.pageNr}</div>
               <button
                 id="next"
                 onClick={this.nextButtonClicked} 
@@ -150,47 +148,47 @@ export class ServiceView extends Component {
   }
 }
 
-const footerStyle = {
-  borderTop: '2px solid #888',
+// const footerStyle = {
+//   borderTop: '2px solid #888',
 
-  display: 'flex',
-  alignItems: 'center',
-  background: '#ccc'
-}
+//   display: 'flex',
+//   alignItems: 'center',
+//   background: '#ccc'
+// }
 
-const headerStyle = {
-  borderBottom: '2px solid #888',
+// const headerStyle = {
+//   borderBottom: '2px solid #888',
 
-  display: 'flex',
-  alignItems: 'center',
-  background: '#ccc'
-}
+//   display: 'flex',
+//   alignItems: 'center',
+//   background: '#ccc'
+// }
 
-const rightStyle = {
-  paddingRight: '10px',
-  marginLeft: 'auto'
-}
+// const rightStyle = {
+//   paddingRight: '10px',
+//   marginLeft: 'auto'
+// }
 
-const footerRightStyle = {
-  padding: '10px',
-  marginLeft: 'auto',
+// const footerRightStyle = {
+//   padding: '10px',
+//   marginLeft: 'auto',
 
-  display: 'flex',
-  alignItems: 'center',
-  flexDirection: 'row'
-}
+//   display: 'flex',
+//   alignItems: 'center',
+//   flexDirection: 'row'
+// }
 
-const textStyle = {
-  padding: '10px'
-}
+// const textStyle = {
+//   padding: '10px'
+// }
 
-const colorStyle = {
-  background: 'rgb(129, 129, 129)',
-  color: '#fff'
-}
+// const colorStyle = {
+//   background: 'rgb(129, 129, 129)',
+//   color: '#fff'
+// }
 
-const specialButtonStyle = {
-  marginLeft: 'auto'
-}
+// const specialButtonStyle = {
+//   marginLeft: 'auto'
+// }
 
 export default view(ServiceView)
