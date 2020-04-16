@@ -10,7 +10,11 @@ const privateVars = {
 const services = store({
     services: [],
     servicesWithCoords: [],
-    employees: [],
+    employees: [{
+        id: 1,
+        name: "Wetzi",
+        address: "ABC"
+    }],
     serviceToEdit: {},
     min: 0,
     max: 0,
@@ -28,8 +32,6 @@ const services = store({
     addService: (serviceDTO) => {
         var result = DataService.addService(serviceDTO);
         services.services = [...services.services, result];
-        privateVars.allServices = [...privateVars.allServices, result];
-    
     },
     setServiceToEdit:(service)=>{
         services.serviceToEdit=service;
@@ -61,6 +63,7 @@ const services = store({
     loadServices: () => {
         var result = DataService.loadServices(services.min, services.max);
         services.services = result;
+        console.log(services.services);
         if(services.max > services.services.length || services.max == "null"){
             services.max = services.services.length;
         }
