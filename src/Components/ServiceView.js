@@ -6,12 +6,10 @@ import services from '../States/ServiceState';
 
 export class ServiceView extends Component {
 
-  state = {
-    pageNr: 1
-  }
 
   componentDidMount (){
     services.initalize();
+    console.log("NrAllServices: " + services.nrAllServices);
     services.min = 1;
     services.max = document.getElementById("entries").value;
     services.showEntries = services.max;
@@ -27,7 +25,7 @@ export class ServiceView extends Component {
     console.log("Max: " + services.max);
     services.loadServices();
 
-    this.setState({pageNr:  1});
+    services.pageNr = 1;
   }
 
   searchChanged = (e) => {
@@ -39,15 +37,19 @@ export class ServiceView extends Component {
     e.preventDefault();
     services.min = parseInt(services.min) + parseInt(services.showEntries);
     services.max = parseInt(services.max) + parseInt(services.showEntries);
+    
+    console.log("Min: " + services.min);
+    console.log("Max: " + services.max);
+    
     services.loadServices();
 
-    console.log(this.state.pageNr);
-    this.setState({pageNr: this.state.pageNr + 1});
+    // this.setState({pageNr: this.state.pageNr + 1});
+    services.pageNr++;
   }
 
   previousButtonClicked = (e) => {
     e.preventDefault();
-    if(services.max == services.nrAllServices){
+    if(services.max == services.nrAllServices && services.max % services.showEntries !== 0){
       services.max = services.max - parseInt(services.nrAllServices) % services.showEntries;
     }
     else{
@@ -56,8 +58,8 @@ export class ServiceView extends Component {
     services.min = parseInt(services.min) - parseInt(services.showEntries);
     services.loadServices();
 
-    console.log(this.state.pageNr);
-    this.setState({pageNr: this.state.pageNr - 1});
+    // this.setState({pageNr: this.state.pageNr - 1});
+    services.pageNr--;
   }
 
   addService = (e) => {
@@ -85,7 +87,7 @@ export class ServiceView extends Component {
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="25">25</option>
-                <option value="null">All</option>
+                <option value="">All</option>
               </select>
             </div>
             <div className="textStyle">entries</div>
@@ -134,7 +136,7 @@ export class ServiceView extends Component {
                 disabled = {services.min == 1}
                 >Previous
                 </button>
-              <div id="pageNr" className="textStyle">{this.state.pageNr}</div>
+              <div id="pageNr" className="textStyle">{services.pageNr}</div>
               <button
                 id="next"
                 onClick={this.nextButtonClicked} 

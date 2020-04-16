@@ -14,7 +14,7 @@ export class Service extends Component {
           <td>{service.date}</td>
           <td>{service.address}</td>
           <td><button className="button" onClick={()=>services.setServiceToEdit(service)}>Bearbeiten</button></td>
-          <td><button className="button" onClick={()=>services.deleteService(service)}>Löschen</button></td>
+          <td><button className="button" onClick={()=>services.deleteService(service.id)}>Löschen</button></td>
       </tr>
     )
   }

@@ -1,34 +1,17 @@
+import axios from 'axios';
+
 const DataService={
-    deleteService:(service)=>{
-        return service;
+    deleteService:(serviceId)=>{
+        return axios.delete(`http://localhost:8080/services/${serviceId}`);
     },
+
     addService: (serviceDTO) => {
-        //TODO addService Request
-
         console.log(serviceDTO);
-
-    
-        
-        return {
-            id: 1,
-            name: serviceDTO.name,
-            employeeId: serviceDTO.employeeId,
-            date: serviceDTO.date,
-            address: serviceDTO.address
-        };
+        return axios.post(`http://localhost:8080/services`, serviceDTO);
     },
 
     editService: (id, serviceDTO) => {
-        //TODO editService Request
-
-        
-        return {
-            id: id,
-            name: serviceDTO.name,
-            employeeId: serviceDTO.employeeId,
-            date: serviceDTO.date,
-            address: serviceDTO.address
-        };
+        return axios.put(`http://localhost:8080/services/${id}`, serviceDTO);
     },
 
     addEmployee: (employeeDTO) => {
@@ -51,62 +34,11 @@ const DataService={
 
     },
     loadServices: (min, max) => {
-       return [{
-        id: "1",
-        name: "Putzen",
-        employee: {
-            id: 1,
-            name: "Wetzi",
-            address: "ABC"
-        },
-        date: "26.02.2020 20:20",
-        address: "Wetzi-Straße 5",
-        lat: "13",
-        lon: "48"
+        return axios.get(`http://localhost:8080/services?min=${min}&max=${max}`);
+    },
 
-        },
-        {
-            id: "3",
-            name: "Müll",
-            employee: {
-                id: 1,
-                name: "Wetzi",
-                address: "ABC"
-            },
-            date: "26.02.2020 20:20",
-            address: "Wetzi-Straße 5",
-            lat: "13",
-            lon: "48"
-    
-            },
-            {
-                id: "4",
-                name: "Spüli",
-                employee: {
-                    id: 1,
-                    name: "Wetzi",
-                    address: "ABC"
-                },
-                date: "26.02.2020 20:20",
-                address: "Wetzi-Straße 5",
-                lat: "13",
-                lon: "48"
-        
-                },
-        {
-        id: "2",
-        name: "Waschen",
-        employee: {
-            id: 1,
-            name: "Wetzi",
-            address: "ABC"
-        },
-        date: "26.02.2020 20:20",
-        address: "Wetzi-Straße 5",
-        lat: "13",
-        lon: "48"
-
-    }];
+    loadAllEmployees: () => {
+        return axios.get(`http://localhost:9000/employees`);
     },
     loadEmployees: (min, max) => {
         return [];
@@ -114,6 +46,10 @@ const DataService={
 
     size: () => {
         return 2;
+    },
+
+    serviceSize: () => {
+        return axios.get(`http://localhost:8080/services/size`);
     }
 }
 export default DataService
