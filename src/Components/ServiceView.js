@@ -1,18 +1,15 @@
 import React, { Component } from 'react'
 import { view } from '@risingstack/react-easy-state';
 import ServiceTable from './ServiceTable';
-import state from '../States/ServiceState';
 import App from '../App.css';
 import services from '../States/ServiceState';
 
 export class ServiceView extends Component {
 
-  state = {
-    pageNr: 1
-  }
 
   componentDidMount (){
     services.initalize();
+    console.log("NrAllServices: " + services.nrAllServices);
     services.min = 1;
     services.max = document.getElementById("entries").value;
     services.showEntries = services.max;
@@ -22,12 +19,13 @@ export class ServiceView extends Component {
   selectionChanged = (e) => {
     e.preventDefault();
     services.showEntries = e.target.value;
-    
     services.min = 1;
-    services.max = services.showEntries;
+    console.log("Min: " + services.min);
+    services.max = e.target.value;
+    console.log("Max: " + services.max);
     services.loadServices();
 
-    this.setState({pageNr:  1});
+    services.pageNr = 1;
   }
 
   searchChanged = (e) => {
@@ -39,15 +37,19 @@ export class ServiceView extends Component {
     e.preventDefault();
     services.min = parseInt(services.min) + parseInt(services.showEntries);
     services.max = parseInt(services.max) + parseInt(services.showEntries);
+    
+    console.log("Min: " + services.min);
+    console.log("Max: " + services.max);
+    
     services.loadServices();
 
-    console.log(this.state.pageNr);
-    this.setState({pageNr: this.state.pageNr + 1});
+    // this.setState({pageNr: this.state.pageNr + 1});
+    services.pageNr++;
   }
 
   previousButtonClicked = (e) => {
     e.preventDefault();
-    if(services.max == services.nrAllServices){
+    if(services.max == services.nrAllServices && services.max % services.showEntries !== 0){
       services.max = services.max - parseInt(services.nrAllServices) % services.showEntries;
     }
     else{
@@ -56,8 +58,8 @@ export class ServiceView extends Component {
     services.min = parseInt(services.min) - parseInt(services.showEntries);
     services.loadServices();
 
-    console.log(this.state.pageNr);
-    this.setState({pageNr: this.state.pageNr - 1});
+    // this.setState({pageNr: this.state.pageNr - 1});
+    services.pageNr--;
   }
 
   addService = (e) => {
@@ -71,40 +73,39 @@ export class ServiceView extends Component {
   render() {
     return (
       <div >
-        <header style={headerStyle}>
+        <header>
         
-            <div style={textStyle}>Show</div>    
+            <div className="textStyle">Show</div>    
             <div>
               <select 
                 name="entries"
                 id="entries"
-                selectedIndex={state.optionIndex}
                 //options={state.options}
                 onChange={this.selectionChanged} 
-                style={colorStyle}>
+                className="colorStyle">
                 <option value="2">2</option>
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="25">25</option>
-                <option value="null">All</option>
+                <option value="">All</option>
               </select>
             </div>
-            <div style={textStyle}>entries</div>
+            <div className="textStyle">entries</div>
 
             <button 
-            style={specialButtonStyle}
+            className="button specialButtonStyle"
             onClick={this.addService} 
-            className="button">
+            >
               {services.showAddService ? "Dienst anlegen abbrechen" : "Dienst anlegen"}
             </button>
 
-            <div style={rightStyle}>
+            <div className="rightStyle">
               <label for="search">Search: </label>
               <input 
                 name="search"
                 id="search" 
                 type="text" 
-                style={colorStyle}
+                className="colorStyle"
                 onChange={this.searchChanged}></input>
             </div>
           
@@ -112,23 +113,30 @@ export class ServiceView extends Component {
         <br></br>
         <ServiceTable services={services.services}></ServiceTable>
         <br></br>
-        <footer style={footerStyle}>
-          <div style={textStyle}>Showing</div>
-          <div>{services.min}</div>
-          <div style={textStyle}>to</div>
-          <div>{services.max}</div>
-          <div style={textStyle}>of</div>
-          <div>{services.nrAllServices}</div>
-          <div style={textStyle}>entries</div>
+        <footer>
+          <div className="textStyle">Showing</div>
+          <div
+            className={services.max === "" ? "hide" : ""}
+          >{services.min}</div>
+          <div 
+          className={services.max === "" ? "hide textStyle" : "textStyle"}
+          >to</div>
+          <div>{services.max === "" ? "All" : services.max}</div>
+          <div 
+          className={services.max === "" ? "hide textStyle" : "textStyle"}
+          >of</div>
+          <div
+          className={services.max === "" ? "hide" : ""}
+          >{services.nrAllServices}</div>
+          <div className="textStyle">Entries</div>
 
           <button 
-          style={specialButtonStyle}
-          className="button" 
+          className="button specialButtonStyle" 
           onClick= {this.showOnMap}>
             {services.showOnMap ? "Nicht mehr anzeigen" : "Auf Karte anzeigen" }
           </button>
 
-          <div style={footerRightStyle}>
+          <div className="footerRightStyle">
               <button 
                 id="previous"
                 onClick={this.previousButtonClicked}
@@ -136,12 +144,12 @@ export class ServiceView extends Component {
                 disabled = {services.min == 1}
                 >Previous
                 </button>
-              <div id="pageNr" style={textStyle}>{this.state.pageNr}</div>
+              <div id="pageNr" className="textStyle">{services.pageNr}</div>
               <button
                 id="next"
                 onClick={this.nextButtonClicked} 
-                className={services.max == services.nrAllServices ? "button disabled" : "button"}
-                disabled = {services.max == services.nrAllServices}
+                className={services.max == services.nrAllServices || services.max === "" ? "button disabled" : "button"}
+                disabled = {services.max == services.nrAllServices || services.max === ""}
                 >Next</button>
           </div>
         </footer>
@@ -150,47 +158,47 @@ export class ServiceView extends Component {
   }
 }
 
-const footerStyle = {
-  borderTop: '2px solid #888',
+// const footerStyle = {
+//   borderTop: '2px solid #888',
 
-  display: 'flex',
-  alignItems: 'center',
-  background: '#ccc'
-}
+//   display: 'flex',
+//   alignItems: 'center',
+//   background: '#ccc'
+// }
 
-const headerStyle = {
-  borderBottom: '2px solid #888',
+// const headerStyle = {
+//   borderBottom: '2px solid #888',
 
-  display: 'flex',
-  alignItems: 'center',
-  background: '#ccc'
-}
+//   display: 'flex',
+//   alignItems: 'center',
+//   background: '#ccc'
+// }
 
-const rightStyle = {
-  paddingRight: '10px',
-  marginLeft: 'auto'
-}
+// const rightStyle = {
+//   paddingRight: '10px',
+//   marginLeft: 'auto'
+// }
 
-const footerRightStyle = {
-  padding: '10px',
-  marginLeft: 'auto',
+// const footerRightStyle = {
+//   padding: '10px',
+//   marginLeft: 'auto',
 
-  display: 'flex',
-  alignItems: 'center',
-  flexDirection: 'row'
-}
+//   display: 'flex',
+//   alignItems: 'center',
+//   flexDirection: 'row'
+// }
 
-const textStyle = {
-  padding: '10px'
-}
+// const textStyle = {
+//   padding: '10px'
+// }
 
-const colorStyle = {
-  background: 'rgb(129, 129, 129)',
-  color: '#fff'
-}
+// const colorStyle = {
+//   background: 'rgb(129, 129, 129)',
+//   color: '#fff'
+// }
 
-const specialButtonStyle = {
-  marginLeft: 'auto'
-}
+// const specialButtonStyle = {
+//   marginLeft: 'auto'
+// }
 
 export default view(ServiceView)

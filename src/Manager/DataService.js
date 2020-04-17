@@ -1,34 +1,15 @@
+import axios from 'axios';
 const DataService = {
-    deleteService: (service) => {
-        return service;
+    deleteService:(serviceId)=>{
+        return axios.delete(`http://localhost:8080/services/${serviceId}`);
     },
+
     addService: (serviceDTO) => {
-        //TODO addService Request
-
-        console.log(serviceDTO);
-
-
-
-        return {
-            id: 1,
-            name: serviceDTO.name,
-            employeeId: serviceDTO.employeeId,
-            date: serviceDTO.date,
-            address: serviceDTO.address
-        };
+        return axios.post(`http://localhost:8080/services`, serviceDTO);
     },
 
     editService: (id, serviceDTO) => {
-        //TODO editService Request
-
-
-        return {
-            id: id,
-            name: serviceDTO.name,
-            employeeId: serviceDTO.employeeId,
-            date: serviceDTO.date,
-            address: serviceDTO.address
-        };
+        return axios.put(`http://localhost:8080/services/${id}`, serviceDTO);
     },
 
     addEmployee: (employeeDTO) => {
@@ -51,28 +32,27 @@ const DataService = {
 
     },
     loadServices: (min, max) => {
-        return [
-            {
-                id: 0,
-                name: "Service 1",
-                employee: {
-                    id: 0,
-                    name: "S1Emp"
-                },
-                date: "20.3.2020",
-                address: "TestAddress",
-                lon:13.235,
-                lat:48.34
+        return axios.get(`http://localhost:8080/services?min=${min}&max=${max}`);
+    },
 
-            }
-        ]
+    loadAllEmployees: () => {
+        return axios.get(`http://localhost:9000/employees`);
     },
     loadEmployees: (min, max) => {
-        return []
+        return [];
     },
 
     size: () => {
-        return 5;
+        return 2;
+    },
+
+    serviceSize: () => {
+        return axios.get(`http://localhost:8080/services/size`);
+    },
+    deleteEmployee:(empId)=>{
+        return {
+            id: empId
+        }
     }
 }
 export default DataService
