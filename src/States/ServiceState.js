@@ -64,8 +64,12 @@ const services = store({
         DataService.loadServices(services.min, services.max).then(res => {
             services.services = res.data
             console.log(services.services);
-            if (services.showEntries > services.services.length) {
-                services.max = services.max - services.services.length;
+            // if (services.showEntries > services.services.length) {
+            //     services.max = services.max - services.services.length;
+            // }
+            
+            if(services.nrAllServices < services.max){
+                services.max = services.nrAllServices;
             }
 
             DataService.loadAllEmployees().then(res => {
@@ -76,12 +80,15 @@ const services = store({
     },
     loadServicesWithCoords: () => {},
     filterServices: (searchString) => {
-        if (privateVars.allServices == null) {
+        console.log(privateVars.allServices);
+        if (privateVars.allServices.length < 1) {
+            console.log("Set private vars");
             privateVars.allServices = services.services;
         }
+        console.log("SearchString: " + searchString);
         if (searchString.length < 1) {
             services.services = privateVars.allServices;
-            privateVars.allServices = null;
+            privateVars.allServices = [];
         } else {
             services.services = services.services.filter(x => x.name.startsWith(searchString));
         }
