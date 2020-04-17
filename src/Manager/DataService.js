@@ -1,12 +1,10 @@
 import axios from 'axios';
-
-const DataService={
+const DataService = {
     deleteService:(serviceId)=>{
         return axios.delete(`http://localhost:8080/services/${serviceId}`);
     },
 
     addService: (serviceDTO) => {
-        console.log(serviceDTO);
         return axios.post(`http://localhost:8080/services`, serviceDTO);
     },
 
@@ -25,7 +23,7 @@ const DataService={
     },
 
     editEmployee: (id, employeeDTO) => {
-        
+
         return {
             id: id,
             name: employeeDTO.name,

@@ -10,7 +10,10 @@ const privateVars = {
 const services = store({
     services: [],
     servicesWithCoords: [],
-    employees: [],
+    employees: [ {
+        id: 0,
+        name: "TestService"
+      }],
     serviceToEdit: {},
     min: 0,
     max: 0,
@@ -35,8 +38,9 @@ const services = store({
             services.nrAllServices++;
         });
     },
-    setServiceToEdit: (service) => {
-        services.serviceToEdit = service;
+    setServiceToEdit:(service)=>{
+        services.serviceToEdit=service;
+        services.showEditService=true;
     },
     deleteService: (serviceId) => {
         DataService.deleteService(serviceId).then(res => {

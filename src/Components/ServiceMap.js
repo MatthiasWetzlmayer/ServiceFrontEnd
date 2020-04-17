@@ -13,7 +13,7 @@ export class ServiceMap extends Component {
         <Map
           google={window.google}
           zoom={8}
-          initialCenter={{ lat: services.services[0].lat, lng: services.services[0].lon }}
+          initialCenter={services.services.length>0&&({ lat: services.services[0].lat, lng: services.services[0].lon })}
           style={mapStyles}
         >
           {services.services.map(x => (
@@ -29,8 +29,8 @@ export class ServiceMap extends Component {
 
 }
 const mapStyles = {
-  width: '100%',
-  height: '100%',
+  width: '50%',
+  height: '50%',
 };
 
 export default view(ServiceMap);

@@ -43,6 +43,8 @@ const employeeState = store({
     showEntries: 0,
     nrAllEmployees: 0,
     showAddEmployee: false,
+    showEditEmployee: false,
+
     deleteEmployee: (empId)=>{
         const id=dataService.deleteEmployee(empId).id
         employeeState.employees=employeeState.employees.filter(x => x.id!==id)
