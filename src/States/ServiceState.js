@@ -80,12 +80,15 @@ const services = store({
     },
     loadServicesWithCoords: () => {},
     filterServices: (searchString) => {
-        if (privateVars.allServices == null) {
+        console.log(privateVars.allServices);
+        if (privateVars.allServices.length < 1) {
+            console.log("Set private vars");
             privateVars.allServices = services.services;
         }
+        console.log("SearchString: " + searchString);
         if (searchString.length < 1) {
             services.services = privateVars.allServices;
-            privateVars.allServices = null;
+            privateVars.allServices = [];
         } else {
             services.services = services.services.filter(x => x.name.startsWith(searchString));
         }
