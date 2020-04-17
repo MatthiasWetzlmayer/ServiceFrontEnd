@@ -75,7 +75,15 @@ table {
     opacity: 0.6;
     cursor: not-allowed;
   }
-
+  .navStyles{
+    display: flex;
+    align-items: stretch;
+    min-width: 100%;
+  }
+  .navItem{
+    flex-grow: 1;
+    margin: 10px 100px 10px 100px;
+  }
   
   /* input[type=submit] {
     width: 100%;

@@ -13,7 +13,7 @@ export class ServiceMap extends Component {
         <Map
           google={window.google}
           zoom={8}
-          initialCenter={{ lat: services.services[0].lat, lng: services.services[0].lon }}
+          initialCenter={services.services.length>0&&({ lat: services.services[0].lat, lng: services.services[0].lon })}
           style={mapStyles}
         >
           {services.services.map(x => (
