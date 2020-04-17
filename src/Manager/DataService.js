@@ -50,6 +50,11 @@ const DataService={
 
     serviceSize: () => {
         return axios.get(`http://localhost:8080/services/size`);
+    },
+    deleteEmployee:(empId)=>{
+        return {
+            id: empId
+        }
     }
 }
 export default DataService

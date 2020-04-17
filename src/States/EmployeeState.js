@@ -17,9 +17,6 @@ const employeeState = store({
         
         console.log("Employees: " + employeeState.employees);
     },
-    deleteEmployee:()=>{
-        employees=employees.filter(x => x.id!==DataService.deleteEmployee(employee).id)
-    },
     setEmployeeToEdit:()=>{},
     editEmployee:(id, employeeDTO) => {
 
@@ -46,7 +43,10 @@ const employeeState = store({
     showEntries: 0,
     nrAllEmployees: 0,
     showAddEmployee: false,
-    deleteEmployee: () => { },
+    deleteEmployee: (empId)=>{
+        const id=dataService.deleteEmployee(empId).id
+        employeeState.employees=employeeState.employees.filter(x => x.id!==id)
+    },
     loadEmployees: () => {
         var result = dataService.loadEmployees(employeeState.min, employeeState.max);
         employeeState.employees = result;
