@@ -148,8 +148,8 @@ export class ServiceView extends Component {
               <button
                 id="next"
                 onClick={this.nextButtonClicked} 
-                className={services.max == services.nrAllServices ? "button disabled" : "button"}
-                disabled = {services.max == services.nrAllServices}
+                className={services.max == services.nrAllServices || services.max === "" ? "button disabled" : "button"}
+                disabled = {services.max == services.nrAllServices || services.max === ""}
                 >Next</button>
           </div>
         </footer>
