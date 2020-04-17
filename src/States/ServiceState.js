@@ -64,8 +64,12 @@ const services = store({
         DataService.loadServices(services.min, services.max).then(res => {
             services.services = res.data
             console.log(services.services);
-            if (services.showEntries > services.services.length) {
-                services.max = services.max - services.services.length;
+            // if (services.showEntries > services.services.length) {
+            //     services.max = services.max - services.services.length;
+            // }
+            
+            if(services.nrAllServices < services.max){
+                services.max = services.nrAllServices;
             }
 
             DataService.loadAllEmployees().then(res => {
