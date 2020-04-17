@@ -4,9 +4,13 @@ import { view } from '@risingstack/react-easy-state';
 export class Employee extends Component {
   render() {
     return (
-      <div>
-        
-      </div>
+      <tr>
+      <td>{employee.id}</td>
+      <td>{employee.name}</td>
+      <td>{employee.address}</td>
+      <td><button className="button" onclick={employees.employeeToEdit=employee}>Edit</button></td>
+      <td><button className="button" onclick={employees.deleteEmployee(employee)}>Delete</button></td>
+   </tr>    
     )
   }
 }

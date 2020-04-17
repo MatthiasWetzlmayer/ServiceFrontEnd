@@ -17,7 +17,9 @@ const employeeState = store({
         
         console.log("Employees: " + employeeState.employees);
     },
-    deleteEmployee:()=>{},
+    deleteEmployee:()=>{
+        employees=employees.filter(x => x.id!==DataService.deleteEmployee(employee).id)
+    },
     setEmployeeToEdit:()=>{},
     editEmployee:(id, employeeDTO) => {
 
