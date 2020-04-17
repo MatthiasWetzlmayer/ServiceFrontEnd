@@ -29,8 +29,8 @@ export class ServiceMap extends Component {
 
 }
 const mapStyles = {
-  width: '100%',
-  height: '100%',
+  width: '50%',
+  height: '50%',
 };
 
 export default view(ServiceMap);

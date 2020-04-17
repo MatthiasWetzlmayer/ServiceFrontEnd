@@ -1,5 +1,5 @@
-const DataService={
-    deleteService:(service)=>{
+const DataService = {
+    deleteService: (service) => {
         return service;
     },
     addService: (serviceDTO) => {
@@ -7,8 +7,8 @@ const DataService={
 
         console.log(serviceDTO);
 
-    
-        
+
+
         return {
             id: 1,
             name: serviceDTO.name,
@@ -21,7 +21,7 @@ const DataService={
     editService: (id, serviceDTO) => {
         //TODO editService Request
 
-        
+
         return {
             id: id,
             name: serviceDTO.name,
@@ -42,7 +42,7 @@ const DataService={
     },
 
     editEmployee: (id, employeeDTO) => {
-        
+
         return {
             id: id,
             name: employeeDTO.name,
@@ -51,7 +51,21 @@ const DataService={
 
     },
     loadServices: (min, max) => {
-       return []
+        return [
+            {
+                id: 0,
+                name: "Service 1",
+                employee: {
+                    id: 0,
+                    name: "S1Emp"
+                },
+                date: "20.3.2020",
+                address: "TestAddress",
+                lon:13.235,
+                lat:48.34
+
+            }
+        ]
     },
     loadEmployees: (min, max) => {
         return []

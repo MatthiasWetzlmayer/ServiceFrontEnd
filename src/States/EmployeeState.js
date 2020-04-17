@@ -44,6 +44,7 @@ const employeeState = store({
     showEntries: 0,
     nrAllEmployees: 0,
     showAddEmployee: false,
+    showEditEmployee: false,
     deleteEmployee: () => { },
     loadEmployees: () => {
         var result = dataService.loadEmployees(employeeState.min, employeeState.max);

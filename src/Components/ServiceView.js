@@ -110,7 +110,7 @@ export class ServiceView extends Component {
           
         </header>
         <br></br>
-        <ServiceTable></ServiceTable>
+        <ServiceTable services={services.services}></ServiceTable>
         <br></br>
         <footer style={footerStyle}>
           <div style={textStyle}>Showing</div>
