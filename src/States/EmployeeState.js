@@ -40,11 +40,8 @@ const employeeState = store({
                 }
             }
 
-            for (var j = 0; j < privateVars.allEmployees.length; ++j) {
-                if (privateVars.allEmployees[j].id === employeeState.employeeToEdit.id) {
-                    privateVars.allEmployees[j] = res.data;
-                }
-            }
+            employeeState.employeeToEdit = {};
+            employeeState.showEditEmployee = false;
         });
     },
 
