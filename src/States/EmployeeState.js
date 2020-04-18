@@ -9,6 +9,10 @@ const privateVars = {
 
 const employeeState = store({
     employees: [{
+        id: 0,
+        name: "Max Mustermann",
+        address: "Musterstraße 5"
+    },{
         id: 1,
         name: "Hans Müller",
         address: "HansMüllerStraße 44"
