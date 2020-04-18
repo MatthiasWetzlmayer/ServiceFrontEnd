@@ -257,8 +257,7 @@ const employeeState = store({
             name: "Programmier Meister",
             address: "Haizing 45, 4081 Hartkirchen"
         }   
-        ],    
-
+        ],   
     employeeToEdit:{},
     addEmployee:(employeeDTO) => {
         var result = dataService.addEmployee(employeeDTO);
