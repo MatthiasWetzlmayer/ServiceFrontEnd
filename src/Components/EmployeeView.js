@@ -17,6 +17,7 @@ export class EmployeeView extends Component {
 
   selectionChanged = (e) => {
     e.preventDefault();
+    employeeState.showAlert = false;
     employeeState.showEntries = e.target.value;
     employeeState.min = 1;
     employeeState.max = employeeState.showEntries;
@@ -26,11 +27,13 @@ export class EmployeeView extends Component {
 
   searchChanged = (e) => {
     e.preventDefault();
+    employeeState.showAlert = false;
     employeeState.filterEmployees(e.target.value);
   }
 
   nextButtonClicked = (e) => {
     e.preventDefault();
+    employeeState.showAlert = false;
     employeeState.min = parseInt(employeeState.min) + parseInt(employeeState.showEntries);
     employeeState.max = parseInt(employeeState.max) + parseInt(employeeState.showEntries);
     employeeState.loadEmployees();
@@ -38,6 +41,7 @@ export class EmployeeView extends Component {
   }
 
   previousButtonClicked = (e) => {
+    employeeState.showAlert = false;
     e.preventDefault();
     if (employeeState.max == employeeState.nrAllEmployees && employeeState.max % employeeState.showEntries !== 0) {
       employeeState.max = parseInt(employeeState.max) - parseInt(employeeState.nrAllEmployees % employeeState.showEntries)
@@ -51,6 +55,7 @@ export class EmployeeView extends Component {
   }
 
   addEmployee = () => {
+    employeeState.showAlert = false;
     employeeState.showAddEmployee = !employeeState.showAddEmployee;
   }
 

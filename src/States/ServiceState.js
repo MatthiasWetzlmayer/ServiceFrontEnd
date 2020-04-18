@@ -2,6 +2,7 @@ import {
     store
 } from '@risingstack/react-easy-state';
 import DataService from '../Manager/DataService';
+import SelectInput from '@material-ui/core/Select/SelectInput';
 
 const privateVars = {
     allServices: [],
@@ -10,10 +11,7 @@ const privateVars = {
 const services = store({
     services: [],
     servicesWithCoords: [],
-    employees: [{
-        id: 0,
-        name: "TestService"
-    }],
+    employees: [],
     serviceToEdit: {},
     min: 0,
     max: 0,
@@ -23,6 +21,9 @@ const services = store({
     showAddService: false,
     showEditService: false,
     showOnMap: false,
+    showAlert: false,
+    alertMessage: "",
+    alertSeverity: "",
 
     initalize: () => {
         DataService.serviceSize().then(res => {
@@ -31,44 +32,70 @@ const services = store({
         });
     },
 
+    updateAlert: (message, severity) => {
+        services.alertMessage = message;
+        services.showAlert = true;
+        services.alertSeverity = severity;
+    },
+
     addService: (serviceDTO) => {
+        services.showAlert = false;
         DataService.addService(serviceDTO).then(res => {
             services.services.push(res.data);
             services.showAddService = false;
             services.nrAllServices++;
+            services.updateAlert("Hinzufügen Erfolgreich", "success");
+        })
+        .catch(error => {
+            services.updateAlert(error.response.data.message, "error");
         });
     },
     setServiceToEdit: (service) => {
-        if(services.serviceToEdit.id === service.id){
+        services.showAlert = false;
+        if (services.serviceToEdit.id === service.id) {
             services.serviceToEdit = {};
             services.showEditService = false;
-        }
-        else{
+        } else {
             services.serviceToEdit = service;
             services.showEditService = true;
         }
 
     },
     deleteService: (serviceId) => {
+        services.showAlert = false;
         DataService.deleteService(serviceId).then(res => {
             services.services = services.services.filter(x => x.id !== res.data.id);
+            services.updateAlert("Löschen", "success");
+        })
+        .catch(error => {
+            services.updateAlert(error.response.data.message, "errror");
         });
     },
     editService: (serviceDTO) => {
+        services.showAlert = false;
         DataService.editService(services.serviceToEdit.id, serviceDTO).then(res => {
-            console.log(res.data);
-            for (var i = 0; i < services.services.length; ++i) {
-                if (services.services[i].id === services.serviceToEdit.id) {
-                    services.services[i] = res.data;
-                }
-            }
+                console.log(res.data);
 
-            services.serviceToEdit = {};
-            services.showEditService = false;
-        });
+                for (var i = 0; i < services.services.length; ++i) {
+                    if (services.services[i].id === services.serviceToEdit.id) {
+                        services.services[i] = res.data;
+                    }
+                }
+
+                services.serviceToEdit = {};
+                services.showEditService = false;
+
+                services.updateAlert("Bearbeiten erfolgreich", "success");
+
+            })
+            .catch(error => {
+                services.updateAlert(error.response.data.message, "error");
+            });
+
 
     },
     loadServices: () => {
+        services.showAlert = false;
         services.services = [];
         let isOpen = false;
         let eventSource = DataService.loadServices(services.min, services.max)
@@ -91,10 +118,14 @@ const services = store({
         DataService.loadAllEmployees().then(res => {
             services.employees = res.data;
         })
+        .catch(error => {
+            services.showAlert(error.response.data.message, "error");
+        })
 
     },
     loadServicesWithCoords: () => {},
     filterServices: (searchString) => {
+        services.showAlert = false;
         console.log(privateVars.allServices);
         if (privateVars.allServices.length < 1) {
             console.log("Set private vars");

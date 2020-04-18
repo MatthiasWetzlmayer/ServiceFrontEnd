@@ -19,12 +19,26 @@ const employeeState = store({
     showAddEmployee: false,
     showEditEmployee: false,
     pageNr: 1,
+    showAlert: false,
+    alertMessage: "",
+    alertSeverity: "",
+
+    updateAlert: (message, severity) => {
+        employeeState.alertMessage = message;
+        employeeState.showAlert = true;
+        employeeState.alertSeverity = severity;
+    },
 
     addEmployee: (employeeDTO) => {
+        employeeState.showAlert = false;
         DataService.addEmployee(employeeDTO).then(res => {
             employeeState.employees.push(res.data);
             employeeState.showAddEmployee = false;
             employeeState.nrAllEmployees++;
+            employeeState.updateAlert("Hinzufügen erfolgreich", "success");
+        })
+        .catch(error => {
+            employeeState.updateAlert(error.response.data.message, "error");
         });
     },
     setEmployeeToEdit: (employee) => {
@@ -39,6 +53,7 @@ const employeeState = store({
 
     },
     editEmployee: (id, employeeDTO) => {
+        employeeState.showAlert = false;
         DataService.editEmployee(employeeState.employeeToEdit.id, employeeDTO).then(res => {
             console.log(res.data);
             for (var i = 0; i < employeeState.employees.length; ++i) {
@@ -49,20 +64,34 @@ const employeeState = store({
 
             employeeState.employeeToEdit = {};
             employeeState.showEditEmployee = false;
+
+            employeeState.updateAlert("Bearbeiten erfolgreich", "success");
+        })
+        .catch(error => {
+            employeeState.updateAlert(error.response.data.message, "error");
         });
     },
 
     deleteEmployee: (empId) => {
+        employeeState.showAlert = false;
         DataService.deleteEmployee(empId).then(res => {
             employeeState.employees = employeeState.employees.filter(x => x.id !== res.data.id);
+            employeeState.updateAlert("Löschen erfolgreich", "success");
+        })
+        .catch(error => {
+            employeeState.updateAlert(error.response.data.message, "error");
         });
     },
     loadEmployees: () => {
+        employeeState.showAlert = false;
         DataService.loadEmployees(employeeState.min, employeeState.max).then(res => {
             employeeState.employees = res.data;
             if (employeeState.nrAllEmployees < employeeState.max) {
                 employeeState.max = employeeState.nrAllEmployees;
             }
+        })
+        .catch(error => {
+            employeeState.updateAlert(error.response.data.message, "error");
         });
     },
     filterEmployees: (searchString) => {
