@@ -34,6 +34,7 @@ export class UpdateEmployee extends Component {
           defaultValue={employeeState.employeeToEdit.address}
       />
 
+      <br/>
       <button
           type="submit"
           value="Submit"
