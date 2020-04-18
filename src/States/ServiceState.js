@@ -39,8 +39,15 @@ const services = store({
         });
     },
     setServiceToEdit: (service) => {
-        services.serviceToEdit = service;
-        services.showEditService = true;
+        if(services.serviceToEdit.id === service.id){
+            services.serviceToEdit = {};
+            services.showEditService = false;
+        }
+        else{
+            services.serviceToEdit = service;
+            services.showEditService = true;
+        }
+
     },
     deleteService: (serviceId) => {
         DataService.deleteService(serviceId).then(res => {

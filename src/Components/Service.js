@@ -13,7 +13,7 @@ export class Service extends Component {
           <td>{service.employee.name}</td>
           <td>{service.date}</td>
           <td>{service.address}</td>
-          <td><button className="button" onClick={()=>services.setServiceToEdit(service)}>Bearbeiten</button></td>
+    <td><button className="button" onClick={()=>services.setServiceToEdit(service)}>{services.showEditService ? "Bearbeiten beenden" : "Bearbeiten"}</button></td>
           <td><button className="button" onClick={()=>services.deleteService(service.id)}>Löschen</button></td>
       </tr>
     )

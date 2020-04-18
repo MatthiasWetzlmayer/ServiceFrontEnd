@@ -158,47 +158,4 @@ export class ServiceView extends Component {
   }
 }
 
-// const footerStyle = {
-//   borderTop: '2px solid #888',
-
-//   display: 'flex',
-//   alignItems: 'center',
-//   background: '#ccc'
-// }
-
-// const headerStyle = {
-//   borderBottom: '2px solid #888',
-
-//   display: 'flex',
-//   alignItems: 'center',
-//   background: '#ccc'
-// }
-
-// const rightStyle = {
-//   paddingRight: '10px',
-//   marginLeft: 'auto'
-// }
-
-// const footerRightStyle = {
-//   padding: '10px',
-//   marginLeft: 'auto',
-
-//   display: 'flex',
-//   alignItems: 'center',
-//   flexDirection: 'row'
-// }
-
-// const textStyle = {
-//   padding: '10px'
-// }
-
-// const colorStyle = {
-//   background: 'rgb(129, 129, 129)',
-//   color: '#fff'
-// }
-
-// const specialButtonStyle = {
-//   marginLeft: 'auto'
-// }
-
 export default view(ServiceView)

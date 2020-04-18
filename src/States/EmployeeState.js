@@ -28,8 +28,15 @@ const employeeState = store({
         });
     },
     setEmployeeToEdit: (employee) => {
-        employeeState.employeeToEdit = employee;
-        employeeState.showEditEmployee = true;
+        if(employeeState.employeeToEdit.id === employee.id){
+            employeeState.employeeToEdit = {};
+            employeeState.showEditEmployee = false;
+        }
+        else{
+            employeeState.employeeToEdit = employee;
+            employeeState.showEditEmployee = true;
+        }
+
     },
     editEmployee: (id, employeeDTO) => {
         DataService.editEmployee(employeeState.employeeToEdit.id, employeeDTO).then(res => {
