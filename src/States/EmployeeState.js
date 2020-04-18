@@ -1,7 +1,7 @@
 import {
     store
 } from '@risingstack/react-easy-state';
-import dataService from '../Manager/DataService';
+import DataService from '../Manager/DataService';
 
 const privateVars = {
     allEmployees: [],
@@ -10,33 +10,7 @@ const privateVars = {
 const employeeState = store({
     employees: [],
 
-    employeeToEdit:{},
-    addEmployee:(employeeDTO) => {
-        var result = dataService.addEmployee(employeeDTO);
-        employeeState.employees = [...employeeState.employees, result];
-        
-        console.log("Employees: " + employeeState.employees);
-    },
-    setEmployeeToEdit:()=>{},
-    editEmployee:(id, employeeDTO) => {
-
-
-        console.log(employeeDTO)
-        var result = dataService.editEmployee(id, employeeDTO);
-        for(var i = 0; i < employeeState.employees.length; ++i){
-            if(employeeState.employees[i].id === id){
-                employeeState.employees[i] = result;
-            }
-        }
-
-        for (var i = 0; i < privateVars.allEmployees.length; ++i){
-            if (privateVars.allEmployees[i].id === id) {
-                privateVars.allEmployees[i] = result;
-            }
-        }
-
-        console.log("Employeesedit: " + employeeState.employees);
-    },
+    employeeToEdit: {},
 
     min: 0,
     max: 0,
@@ -44,25 +18,56 @@ const employeeState = store({
     nrAllEmployees: 0,
     showAddEmployee: false,
     showEditEmployee: false,
+    pageNr: 1,
 
-    deleteEmployee: (empId)=>{
-        const id=dataService.deleteEmployee(empId).id
-        employeeState.employees=employeeState.employees.filter(x => x.id!==id)
+    addEmployee: (employeeDTO) => {
+        DataService.addEmployee(employeeDTO).then(res => {
+            employeeState.employees.push(res.data);
+            employeeState.showAddEmployee = false;
+            employeeState.nrAllEmployees++;
+        });
+    },
+    setEmployeeToEdit: (employee) => {
+        employeeState.employeeToEdit = employee;
+        employeeState.showEditEmployee = true;
+    },
+    editEmployee: (id, employeeDTO) => {
+        DataService.editEmployee(employeeState.employeeToEdit.id, employeeDTO).then(res => {
+            console.log(res.data);
+            for (var i = 0; i < employeeState.employees.length; ++i) {
+                if (employeeState.employees[i].id === employeeState.employeeToEdit.id) {
+                    employeeState.employees[i] = res.data;
+                }
+            }
+
+            for (var j = 0; j < privateVars.allEmployees.length; ++j) {
+                if (privateVars.allEmployees[j].id === employeeState.employeeToEdit.id) {
+                    privateVars.allEmployees[j] = res.data;
+                }
+            }
+        });
+    },
+
+    deleteEmployee: (empId) => {
+        DataService.deleteEmployee(empId).then(res => {
+            employeeState.employees = employeeState.employees.filter(x => x.id !== res.data.id);
+        });
     },
     loadEmployees: () => {
-        var result = dataService.loadEmployees(employeeState.min, employeeState.max);
-        employeeState.employees = result;
-        if (employeeState.max > employeeState.employees.length || employeeState.max == "null") {
-            employeeState.max = employeeState.employees.length;
-        }
+        DataService.loadEmployees(employeeState.min, employeeState.max).then(res => {
+            employeeState.employees = res.data;
+            if (employeeState.nrAllEmployees < employeeState.max) {
+                employeeState.max = employeeState.nrAllEmployees;
+            }
+        });
     },
     filterEmployees: (searchString) => {
-        if (privateVars.allEmployees === null) {
+        if (privateVars.allEmployees.length < 1) {
             privateVars.allEmployees = employeeState.employees;
         }
         if (searchString.length < 1) {
             employeeState.employees = privateVars.allEmployees;
-            privateVars.allEmployees = null;
+            privateVars.allEmployees = [];
         }
         else {
             employeeState.employees = employeeState.employees.filter(x => x.name.startsWith(searchString));
@@ -70,8 +75,10 @@ const employeeState = store({
     },
 
     initalize: () => {
-        var result = dataService.size();
-        employeeState.nrAllEmployees = result;
+        DataService.employeeSize().then(res => {
+            employeeState.nrAllEmployees = res.data;
+            console.log("Res: " + res.data);
+        });
     },
 
 });

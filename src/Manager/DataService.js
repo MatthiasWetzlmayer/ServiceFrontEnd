@@ -12,48 +12,38 @@ const DataService = {
         return axios.put(`http://localhost:8080/services/${id}`, serviceDTO);
     },
 
-    addEmployee: (employeeDTO) => {
-        console.log(employeeDTO);
-
-        return {
-            id: 1,
-            name: employeeDTO.name,
-            address: employeeDTO.address
-        };
-    },
-
-    editEmployee: (id, employeeDTO) => {
-
-        return {
-            id: id,
-            name: employeeDTO.name,
-            address: employeeDTO.address
-        };
-
-    },
     loadServices: (min, max) => {
         return new EventSource(`http://localhost:8080/services?min=${min}&max=${max}`);
         // return axios.get(`http://localhost:8080/services?min=${min}&max=${max}`);
     },
 
-    loadAllEmployees: () => {
-        return axios.get(`http://localhost:9000/employees`);
-    },
-    loadEmployees: (min, max) => {
-        return [];
-    },
-
-    size: () => {
-        return 2;
-    },
-
     serviceSize: () => {
         return axios.get(`http://localhost:8080/services/size`);
     },
+
     deleteEmployee:(empId)=>{
-        return {
-            id: empId
-        }
-    }
+        return axios.delete(`http://localhost:9000/employees/${empId}`);
+    },
+
+    addEmployee: (employeeDTO) => {
+        return axios.post(`http://localhost:9000/employees`, employeeDTO);
+    },
+
+    editEmployee: (id, employeeDTO) => {
+        return axios.put(`http://localhost:9000/employees/${id}`, employeeDTO);
+    },
+
+    loadAllEmployees: () => {
+        return axios.get(`http://localhost:9000/employees`);
+    },
+
+    loadEmployees: (min, max) => {
+        return axios.get(`http://localhost:9000/employees?min=${min}&max=${max}`);
+    },
+
+    employeeSize: () => {
+        return axios.get(`http://localhost:9000/employees/size`);
+    },
+
 }
 export default DataService

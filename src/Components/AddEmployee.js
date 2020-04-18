@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { view } from '@risingstack/react-easy-state';
-import state from '../States/EmployeeState';
+import employeeState from '../States/EmployeeState';
 import App from '../App.css';
 
 export class AddEmployee extends Component {
@@ -11,7 +11,7 @@ export class AddEmployee extends Component {
       name: e.target.name.value,
       address: e.target.address.value,
     };
-    state.addEmployee(employeeDTO);
+    employeeState.addEmployee(employeeDTO);
   }
 
   render() {
@@ -31,7 +31,7 @@ export class AddEmployee extends Component {
             type="text"
             name="address"
         />
-
+        <br/>
         <button
             type="submit"
             value="Submit"
