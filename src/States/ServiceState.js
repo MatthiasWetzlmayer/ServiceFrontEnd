@@ -10,10 +10,10 @@ const privateVars = {
 const services = store({
     services: [],
     servicesWithCoords: [],
-    employees: [ {
+    employees: [{
         id: 0,
         name: "TestService"
-      }],
+    }],
     serviceToEdit: {},
     min: 0,
     max: 0,
@@ -38,9 +38,9 @@ const services = store({
             services.nrAllServices++;
         });
     },
-    setServiceToEdit:(service)=>{
-        services.serviceToEdit=service;
-        services.showEditService=true;
+    setServiceToEdit: (service) => {
+        services.serviceToEdit = service;
+        services.showEditService = true;
     },
     deleteService: (serviceId) => {
         DataService.deleteService(serviceId).then(res => {
@@ -55,7 +55,7 @@ const services = store({
                     services.services[i] = res.data;
                 }
             }
-    
+
             for (var j = 0; j < privateVars.allServices.length; ++j) {
                 if (privateVars.allServices[j].id === services.serviceToEdit.id) {
                     privateVars.allServices[j] = res.data;
@@ -65,21 +65,46 @@ const services = store({
 
     },
     loadServices: () => {
-        DataService.loadServices(services.min, services.max).then(res => {
-            services.services = res.data
-            console.log(services.services);
-            // if (services.showEntries > services.services.length) {
-            //     services.max = services.max - services.services.length;
-            // }
-            
-            if(services.nrAllServices < services.max){
+        services.services = [];
+        // DataService.loadServices(services.min, services.max).then(res => {
+        //     services.services = res.data
+        //     console.log(services.services);
+        //     // if (services.showEntries > services.services.length) {
+        //     //     services.max = services.max - services.services.length;
+        //     // }
+
+        //     if(services.nrAllServices < services.max){
+        //         services.max = services.nrAllServices;
+        //     }
+
+        //     DataService.loadAllEmployees().then(res => {
+        //         services.employees = res.data;
+        //     })
+        // });
+        let isOpen = false;
+        let eventSource = DataService.loadServices(services.min, services.max)
+        eventSource.onopen = e => {
+            if (isOpen) {
+                eventSource.close();
+            } else {
+                isOpen = true;
+            }
+        }
+        eventSource.onmessage = e => {
+            console.log(e.data);
+            // console.log(e.data);
+
+            services.services.push(JSON.parse(e.data));
+            if (services.nrAllServices < services.max) {
                 services.max = services.nrAllServices;
             }
 
-            DataService.loadAllEmployees().then(res => {
-                services.employees = res.data;
-            })
-        });
+            
+        }
+
+        DataService.loadAllEmployees().then(res => {
+            services.employees = res.data;
+        })
 
     },
     loadServicesWithCoords: () => {},
