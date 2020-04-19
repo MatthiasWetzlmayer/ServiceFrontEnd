@@ -43,7 +43,7 @@ export class EmployeeView extends Component {
   previousButtonClicked = (e) => {
     employeeState.showAlert = false;
     e.preventDefault();
-    if (employeeState.max == employeeState.nrAllEmployees && employeeState.max % employeeState.showEntries !== 0) {
+    if (employeeState.max === employeeState.nrAllEmployees && employeeState.max % employeeState.showEntries !== 0) {
       employeeState.max = parseInt(employeeState.max) - parseInt(employeeState.nrAllEmployees % employeeState.showEntries)
     }
     else {
@@ -101,23 +101,23 @@ export class EmployeeView extends Component {
           <div className="textStyle">Zeige</div>
           <div
             className={employeeState.max === "" ? "hide" : ""}
-          >{employeeState.min}</div>
+          >{employeeState.min}.</div>
           <div
             className={employeeState.max === "" ? "hide textStyle" : "textStyle"}
           >bis</div>
-          <div>{employeeState.max === "" ? "alle" : employeeState.max}</div>
+          <div>{employeeState.max === "" ? "alle" : employeeState.max}.</div>
           <div
             className={employeeState.max === "" ? "hide textStyle" : "textStyle"}
           >von</div>
           <div
             className={employeeState.max === "" ? "hide" : ""}
           >{employeeState.nrAllEmployees}</div>
-          <div className="textStyle">Einträge an</div>
+          <div className="textStyle">Einträgen an</div>
 
           <div className="footerRightStyle">
-            <button id="previous" disabled={employeeState.min == 1} className={employeeState.min == 1 ? "button disabled" : "button"} onClick={this.previousButtonClicked}>Vorherige</button>
+            <button id="previous" disabled={employeeState.min === 1} className={employeeState.min === 1 ? "button disabled" : "button"} onClick={this.previousButtonClicked}>Vorherige</button>
             <div id="pageNr" className="textStyle">{employeeState.pageNr}</div>
-            <button id="next" disabled={employeeState.max == employeeState.nrAllEmployees} className={employeeState.max == employeeState.nrAllEmployees ? "button disabled" : "button"} onClick={this.nextButtonClicked}>Nächste</button>
+            <button id="next" disabled={employeeState.max === employeeState.nrAllEmployees} className={employeeState.max === employeeState.nrAllEmployees ? "button disabled" : "button"} onClick={this.nextButtonClicked}>Nächste</button>
           </div>
         </footer>
       </div>

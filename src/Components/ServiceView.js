@@ -53,7 +53,7 @@ export class ServiceView extends Component {
   previousButtonClicked = (e) => {
     e.preventDefault();
     services.showAlert = false;
-    if(services.max == services.nrAllServices && services.max % services.showEntries !== 0){
+    if(services.max === services.nrAllServices && services.max % services.showEntries !== 0){
       services.max = services.max - parseInt(services.nrAllServices) % services.showEntries;
     }
     else{
@@ -121,18 +121,18 @@ export class ServiceView extends Component {
           <div className="textStyle">Zeige</div>
           <div
             className={services.max === "" ? "hide" : ""}
-          >{services.min}</div>
-          <div 
-          className={services.max === "" ? "hide textStyle" : "textStyle"}
-          >von</div>
-          <div>{services.max === "" ? "alle" : services.max}</div>
+          >{services.min}.</div>
           <div 
           className={services.max === "" ? "hide textStyle" : "textStyle"}
           >bis</div>
+          <div>{services.max === "" ? "alle" : services.max + "."}</div>
+          <div 
+          className={services.max === "" ? "hide textStyle" : "textStyle"}
+          >von</div>
           <div
           className={services.max === "" ? "hide" : ""}
           >{services.nrAllServices}</div>
-          <div className="textStyle">Einträge an</div>
+          <div className="textStyle">Einträgen an</div>
 
           <button 
           className="button specialButtonStyle" 
@@ -144,16 +144,16 @@ export class ServiceView extends Component {
               <button 
                 id="previous"
                 onClick={this.previousButtonClicked}
-                className={services.min == 1 ? "button disabled" : "button"}
-                disabled = {services.min == 1}
+                className={services.min === 1 ? "button disabled" : "button"}
+                disabled = {services.min === 1}
                 >Vorherige
                 </button>
               <div id="pageNr" className="textStyle">{services.pageNr}</div>
               <button
                 id="next"
                 onClick={this.nextButtonClicked} 
-                className={services.max == services.nrAllServices || services.max === "" ? "button disabled" : "button"}
-                disabled = {services.max == services.nrAllServices || services.max === ""}
+                className={services.max === services.nrAllServices || services.max === "" ? "button disabled" : "button"}
+                disabled = {services.max === services.nrAllServices || services.max === ""}
                 >Nächste</button>
           </div>
         </footer>
