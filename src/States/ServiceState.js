@@ -20,9 +20,12 @@ const services = store({
     showAddService: false,
     showEditService: false,
     showOnMap: false,
-    showAlert: false,
-    alertMessage: "",
-    alertSeverity: "",
+
+    customAlert: {
+        alertMessage: "",
+        alertSeverity: "",
+        showAlert: false
+    },
 
     initalize: () => {
         DataService.serviceSize().then(res => {
@@ -32,13 +35,17 @@ const services = store({
     },
 
     updateAlert: (message, severity) => {
-        services.alertMessage = message;
-        services.showAlert = true;
-        services.alertSeverity = severity;
+        services.customAlert.alertMessage = message;
+        services.customAlert.showAlert = true;
+        services.customAlert.alertSeverity = severity;
+    },
+
+    disableAlert: () => {
+        services.customAlert.showAlert = false;
     },
 
     addService: (serviceDTO) => {
-        services.showAlert = false;
+        services.disableAlert();
         DataService.addService(serviceDTO).then(res => {
             services.services.push(res.data);
             services.showAddService = false;
@@ -50,7 +57,7 @@ const services = store({
         });
     },
     setServiceToEdit: (service) => {
-        services.showAlert = false;
+        services.disableAlert();
         if (services.serviceToEdit.id === service.id) {
             services.serviceToEdit = {};
             services.showEditService = false;
@@ -61,7 +68,7 @@ const services = store({
 
     },
     deleteService: (serviceId) => {
-        services.showAlert = false;
+        services.disableAlert();
         if(serviceId ===services.serviceToEdit.id){
             services.serviceToEdit = {};
             services.showEditService = false;
@@ -78,7 +85,7 @@ const services = store({
         });
     },
     editService: (serviceDTO) => {
-        services.showAlert = false;
+        services.disableAlert();
         DataService.editService(services.serviceToEdit.id, serviceDTO).then(res => {
                 console.log(res.data);
 
@@ -101,7 +108,7 @@ const services = store({
 
     },
     loadServices: () => {
-        services.showAlert = false;
+        services.disableAlert();
         services.services = [];
         let isOpen = false;
         let eventSource = DataService.loadServices(services.min, services.max)
@@ -129,9 +136,8 @@ const services = store({
         })
 
     },
-    loadServicesWithCoords: () => {},
     filterServices: (searchString) => {
-        services.showAlert = false;
+        services.disableAlert();
         console.log(privateVars.allServices);
         if (privateVars.allServices.length < 1) {
             console.log("Set private vars");

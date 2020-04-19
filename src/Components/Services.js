@@ -13,7 +13,7 @@ export class Services extends Component {
     return (
       <div>
         <ServiceView></ServiceView>
-        {services.showAlert&&<Alert severity={services.alertSeverity} variant="filled">{services.alertMessage}</Alert>}
+        {services.customAlert.showAlert&&<Alert severity={services.customAlert.alertSeverity} variant="filled">{services.customAlert.alertMessage}</Alert>}
         
         {services.showAddService&&<AddService></AddService>}
         {services.showEditService&&<EditService></EditService>}

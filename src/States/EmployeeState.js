@@ -19,18 +19,25 @@ const employeeState = store({
     showAddEmployee: false,
     showEditEmployee: false,
     pageNr: 1,
-    showAlert: false,
-    alertMessage: "",
-    alertSeverity: "",
+    customAlert: {
+        showAlert: false,
+        alertMessage: "",
+        alertSeverity: ""
+    },
+    
 
     updateAlert: (message, severity) => {
-        employeeState.alertMessage = message;
-        employeeState.showAlert = true;
-        employeeState.alertSeverity = severity;
+        employeeState.customAlert.alertMessage = message;
+        employeeState.customAlert.showAlert = true;
+        employeeState.customAlert.alertSeverity = severity;
+    },
+
+    disableAlert: () => {
+        employeeState.customAlert.showAlert = false;
     },
 
     addEmployee: (employeeDTO) => {
-        employeeState.showAlert = false;
+        employeeState.disableAlert();
         DataService.addEmployee(employeeDTO).then(res => {
             employeeState.employees.push(res.data);
             employeeState.showAddEmployee = false;
@@ -53,7 +60,7 @@ const employeeState = store({
 
     },
     editEmployee: (id, employeeDTO) => {
-        employeeState.showAlert = false;
+        employeeState.disableAlert();
         DataService.editEmployee(employeeState.employeeToEdit.id, employeeDTO).then(res => {
             console.log(res.data);
             for (var i = 0; i < employeeState.employees.length; ++i) {
@@ -73,7 +80,7 @@ const employeeState = store({
     },
 
     deleteEmployee: (empId) => {
-        employeeState.showAlert = false;
+        employeeState.disableAlert();
         DataService.deleteEmployee(empId).then(res => {
             employeeState.employees = employeeState.employees.filter(x => x.id !== res.data.id);
             employeeState.nrAllEmployees--;
@@ -84,7 +91,7 @@ const employeeState = store({
         });
     },
     loadEmployees: () => {
-        employeeState.showAlert = false;
+        employeeState.disableAlert();
         DataService.loadEmployees(employeeState.min, employeeState.max).then(res => {
             employeeState.employees = res.data;
             if (employeeState.nrAllEmployees < employeeState.max) {

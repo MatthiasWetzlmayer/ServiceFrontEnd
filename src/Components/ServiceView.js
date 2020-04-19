@@ -18,7 +18,7 @@ export class ServiceView extends Component {
 
   selectionChanged = (e) => {
     e.preventDefault();
-    services.showAlert = false;
+    services.disableAlert();
     services.showEntries = e.target.value;
     services.min = 1;
     console.log("Min: " + services.min);
@@ -31,13 +31,13 @@ export class ServiceView extends Component {
 
   searchChanged = (e) => {
     e.preventDefault();
-    services.showAlert = false;
+    services.disableAlert();
     services.filterServices(e.target.value);
   }
 
   nextButtonClicked = (e) => {
     e.preventDefault();
-    services.showAlert = false;
+    services.disableAlert();
     services.min = parseInt(services.min) + parseInt(services.showEntries);
     services.max = parseInt(services.max) + parseInt(services.showEntries);
     
@@ -52,7 +52,7 @@ export class ServiceView extends Component {
 
   previousButtonClicked = (e) => {
     e.preventDefault();
-    services.showAlert = false;
+    services.disableAlert();
     if(services.max === services.nrAllServices && services.max % services.showEntries !== 0){
       services.max = services.max - parseInt(services.nrAllServices) % services.showEntries;
     }
@@ -67,12 +67,12 @@ export class ServiceView extends Component {
   }
 
   addService = (e) => {
-    services.showAlert = false;
+    services.disableAlert();
     services.showAddService = !services.showAddService;
   }
 
   showOnMap = (e) => {
-    services.showAlert = false;
+    services.disableAlert();
     services.showOnMap = !services.showOnMap;
   }
 
