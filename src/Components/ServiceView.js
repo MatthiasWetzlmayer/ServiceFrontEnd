@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { view } from '@risingstack/react-easy-state';
 import ServiceTable from './ServiceTable';
-import App from '../App.css';
+import '../App.css';
 import services from '../States/ServiceState';
 
 export class ServiceView extends Component {
@@ -9,7 +9,6 @@ export class ServiceView extends Component {
 
   componentDidMount (){
     services.initalize();
-    console.log("NrAllServices: " + services.nrAllServices);
     services.min = 1;
     services.max = document.getElementById("entries").value;
     services.showEntries = services.max;
@@ -18,6 +17,7 @@ export class ServiceView extends Component {
 
   selectionChanged = (e) => {
     e.preventDefault();
+    services.disableAlert();
     services.showEntries = e.target.value;
     services.min = 1;
     console.log("Min: " + services.min);
@@ -30,11 +30,13 @@ export class ServiceView extends Component {
 
   searchChanged = (e) => {
     e.preventDefault();
+    services.disableAlert();
     services.filterServices(e.target.value);
   }
 
   nextButtonClicked = (e) => {
     e.preventDefault();
+    services.disableAlert();
     services.min = parseInt(services.min) + parseInt(services.showEntries);
     services.max = parseInt(services.max) + parseInt(services.showEntries);
     
@@ -49,7 +51,8 @@ export class ServiceView extends Component {
 
   previousButtonClicked = (e) => {
     e.preventDefault();
-    if(services.max == services.nrAllServices && services.max % services.showEntries !== 0){
+    services.disableAlert();
+    if(services.max === services.nrAllServices && services.max % services.showEntries !== 0){
       services.max = services.max - parseInt(services.nrAllServices) % services.showEntries;
     }
     else{
@@ -63,10 +66,12 @@ export class ServiceView extends Component {
   }
 
   addService = (e) => {
+    services.disableAlert();
     services.showAddService = !services.showAddService;
   }
 
   showOnMap = (e) => {
+    services.disableAlert();
     services.showOnMap = !services.showOnMap;
   }
 
@@ -75,7 +80,7 @@ export class ServiceView extends Component {
       <div >
         <header>
         
-            <div className="textStyle">Show</div>    
+            <div className="textStyle">Zeige</div>    
             <div>
               <select 
                 name="entries"
@@ -87,10 +92,10 @@ export class ServiceView extends Component {
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="25">25</option>
-                <option value="">All</option>
+                <option value="">Alle</option>
               </select>
             </div>
-            <div className="textStyle">entries</div>
+            <div className="textStyle">Einträge an</div>
 
             <button 
             className="button specialButtonStyle"
@@ -100,7 +105,7 @@ export class ServiceView extends Component {
             </button>
 
             <div className="rightStyle">
-              <label for="search">Search: </label>
+              <label for="search">Suche: </label>
               <input 
                 name="search"
                 id="search" 
@@ -110,25 +115,23 @@ export class ServiceView extends Component {
             </div>
           
         </header>
-        <br></br>
         <ServiceTable services={services.services}></ServiceTable>
-        <br></br>
         <footer>
-          <div className="textStyle">Showing</div>
+          <div className="textStyle">Zeige</div>
           <div
             className={services.max === "" ? "hide" : ""}
-          >{services.min}</div>
+          >{services.min}.</div>
           <div 
           className={services.max === "" ? "hide textStyle" : "textStyle"}
-          >to</div>
-          <div>{services.max === "" ? "All" : services.max}</div>
+          >bis</div>
+          <div>{services.max === "" ? "alle" : services.max + "."}</div>
           <div 
           className={services.max === "" ? "hide textStyle" : "textStyle"}
-          >of</div>
+          >von</div>
           <div
           className={services.max === "" ? "hide" : ""}
           >{services.nrAllServices}</div>
-          <div className="textStyle">Entries</div>
+          <div className="textStyle">Einträgen an</div>
 
           <button 
           className="button specialButtonStyle" 
@@ -140,65 +143,22 @@ export class ServiceView extends Component {
               <button 
                 id="previous"
                 onClick={this.previousButtonClicked}
-                className={services.min == 1 ? "button disabled" : "button"}
-                disabled = {services.min == 1}
-                >Previous
+                className={parseInt(services.min) <= 1 ? "button disabled" : "button"}
+                disabled = {parseInt(services.min) <= 1}
+                >Vorherige
                 </button>
               <div id="pageNr" className="textStyle">{services.pageNr}</div>
               <button
                 id="next"
                 onClick={this.nextButtonClicked} 
-                className={services.max == services.nrAllServices || services.max === "" ? "button disabled" : "button"}
-                disabled = {services.max == services.nrAllServices || services.max === ""}
-                >Next</button>
+                className={parseInt(services.max) === parseInt(services.nrAllServices) || services.max === "" ? "button disabled" : "button"}
+                disabled = {parseInt(services.max) === parseInt(services.nrAllServices) || services.max === ""}
+                >Nächste</button>
           </div>
         </footer>
       </div>
     )
   }
 }
-
-// const footerStyle = {
-//   borderTop: '2px solid #888',
-
-//   display: 'flex',
-//   alignItems: 'center',
-//   background: '#ccc'
-// }
-
-// const headerStyle = {
-//   borderBottom: '2px solid #888',
-
-//   display: 'flex',
-//   alignItems: 'center',
-//   background: '#ccc'
-// }
-
-// const rightStyle = {
-//   paddingRight: '10px',
-//   marginLeft: 'auto'
-// }
-
-// const footerRightStyle = {
-//   padding: '10px',
-//   marginLeft: 'auto',
-
-//   display: 'flex',
-//   alignItems: 'center',
-//   flexDirection: 'row'
-// }
-
-// const textStyle = {
-//   padding: '10px'
-// }
-
-// const colorStyle = {
-//   background: 'rgb(129, 129, 129)',
-//   color: '#fff'
-// }
-
-// const specialButtonStyle = {
-//   marginLeft: 'auto'
-// }
 
 export default view(ServiceView)

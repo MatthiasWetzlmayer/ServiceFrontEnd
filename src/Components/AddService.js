@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { view } from '@risingstack/react-easy-state';
 import state from '../States/ServiceState';
-import App from '../App.css';
+import '../App.css';
 
 export class AddService extends Component {
   onSubmit = (e) => {

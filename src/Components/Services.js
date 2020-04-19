@@ -5,7 +5,7 @@ import AddService from './AddService'
 import EditService from './EditService'
 import ServiceMap from './ServiceMap'
 import services from '../States/ServiceState'
-
+import Alert from '@material-ui/lab/Alert';
 
 
 export class Services extends Component {
@@ -13,6 +13,7 @@ export class Services extends Component {
     return (
       <div>
         <ServiceView></ServiceView>
+        {services.customAlert.showAlert&&<Alert severity={services.customAlert.alertSeverity} variant="filled">{services.customAlert.alertMessage}</Alert>}
         
         {services.showAddService&&<AddService></AddService>}
         {services.showEditService&&<EditService></EditService>}

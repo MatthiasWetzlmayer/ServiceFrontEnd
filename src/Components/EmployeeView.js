@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { view } from '@risingstack/react-easy-state';
 import EmployeeTable from './EmployeeTable';
 import employeeState from '../States/EmployeeState';
-import App from '../App.css';
+import '../App.css';
 
 export class EmployeeView extends Component {
 
@@ -17,6 +17,7 @@ export class EmployeeView extends Component {
 
   selectionChanged = (e) => {
     e.preventDefault();
+    employeeState.disableAlert();
     employeeState.showEntries = e.target.value;
     employeeState.min = 1;
     employeeState.max = employeeState.showEntries;
@@ -26,11 +27,13 @@ export class EmployeeView extends Component {
 
   searchChanged = (e) => {
     e.preventDefault();
+    employeeState.disableAlert();
     employeeState.filterEmployees(e.target.value);
   }
 
   nextButtonClicked = (e) => {
     e.preventDefault();
+    employeeState.disableAlert();
     employeeState.min = parseInt(employeeState.min) + parseInt(employeeState.showEntries);
     employeeState.max = parseInt(employeeState.max) + parseInt(employeeState.showEntries);
     employeeState.loadEmployees();
@@ -38,8 +41,9 @@ export class EmployeeView extends Component {
   }
 
   previousButtonClicked = (e) => {
+    employeeState.disableAlert();
     e.preventDefault();
-    if (employeeState.max == employeeState.nrAllEmployees && employeeState.max % employeeState.showEntries !== 0) {
+    if (employeeState.max === employeeState.nrAllEmployees && employeeState.max % employeeState.showEntries !== 0) {
       employeeState.max = parseInt(employeeState.max) - parseInt(employeeState.nrAllEmployees % employeeState.showEntries)
     }
     else {
@@ -51,6 +55,7 @@ export class EmployeeView extends Component {
   }
 
   addEmployee = () => {
+    employeeState.disableAlert();
     employeeState.showAddEmployee = !employeeState.showAddEmployee;
   }
 
@@ -59,7 +64,7 @@ export class EmployeeView extends Component {
       <div >
         <header className="headerStyle">
 
-          <div className="textStyle">Show</div>
+          <div className="textStyle">Zeige</div>
           <div>
             <select
               name="entries"
@@ -69,10 +74,10 @@ export class EmployeeView extends Component {
               <option value="2">2</option>
               <option value="10">10</option>
               <option value="25">25</option>
-              <option value="">All</option>
+              <option value="">Alle</option>
             </select>
           </div>
-          <div className="textStyle">entries</div>
+          <div className="textStyle">Einträge an</div>
 
           <button
             onClick={this.addEmployee}
@@ -81,7 +86,7 @@ export class EmployeeView extends Component {
           </button>
 
           <div className="rightStyle">
-            <label for="search">Search: </label>
+            <label for="search">Suche: </label>
             <input
               name="search"
               id="search"
@@ -93,26 +98,26 @@ export class EmployeeView extends Component {
         </header>
         <EmployeeTable employees={employeeState.employees}></EmployeeTable>
         <footer className="footerStyle">
-          <div className="textStyle">Showing</div>
+          <div className="textStyle">Zeige</div>
           <div
             className={employeeState.max === "" ? "hide" : ""}
-          >{employeeState.min}</div>
+          >{employeeState.min}.</div>
           <div
             className={employeeState.max === "" ? "hide textStyle" : "textStyle"}
-          >to</div>
-          <div>{employeeState.max === "" ? "All" : employeeState.max}</div>
+          >bis</div>
+          <div>{employeeState.max === "" ? "alle" : employeeState.max}.</div>
           <div
             className={employeeState.max === "" ? "hide textStyle" : "textStyle"}
-          >of</div>
+          >von</div>
           <div
             className={employeeState.max === "" ? "hide" : ""}
           >{employeeState.nrAllEmployees}</div>
-          <div className="textStyle">entries</div>
+          <div className="textStyle">Einträgen an</div>
 
           <div className="footerRightStyle">
-            <button id="previous" disabled={employeeState.min == 1} className={employeeState.min == 1 ? "button disabled" : "button"} onClick={this.previousButtonClicked}>Previous</button>
+            <button id="previous" disabled={parseInt(employeeState.min) <= 1} className={parseInt(employeeState.min) <= 1 ? "button disabled" : "button"} onClick={this.previousButtonClicked}>Vorherige</button>
             <div id="pageNr" className="textStyle">{employeeState.pageNr}</div>
-            <button id="next" disabled={employeeState.max == employeeState.nrAllEmployees} className={employeeState.max == employeeState.nrAllEmployees ? "button disabled" : "button"} onClick={this.nextButtonClicked}>Next</button>
+            <button id="next" disabled={parseInt(employeeState.max) === parseInt(employeeState.nrAllEmployees)} className={parseInt(employeeState.max) === parseInt(employeeState.nrAllEmployees) ? "button disabled" : "button"} onClick={this.nextButtonClicked}>Nächste</button>
           </div>
         </footer>
       </div>

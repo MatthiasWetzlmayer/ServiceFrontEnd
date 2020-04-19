@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { view } from '@risingstack/react-easy-state';
-import employees from '../States/EmployeeState'
 import employeeState from '../States/EmployeeState';
 
 export class Employee extends Component {
@@ -13,10 +12,10 @@ export class Employee extends Component {
       <td>{employee.address}</td>
       <td><button className="button" onClick={()=>{
         employeeState.setEmployeeToEdit(employee);
-      }}>Edit</button></td>
+      }}>{employeeState.showEditEmployee && employee.id === employeeState.employeeToEdit.id ? "Bearbeiten beenden" : "Bearbeiten"}</button></td>
       <td><button className="button" onClick={()=>{
         employeeState.deleteEmployee(employee.id)
-        }}>Delete</button></td>
+        }}>Löschen</button></td>
    </tr>    
     )
   }

@@ -9,8 +9,10 @@ export class EmployeeTable extends Component {
         <table>
           <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Address</th>
+            <th>Mitarbeiter</th>
+            <th>Adresse</th>
+            <th>Bearbeiten</th>
+            <th>Löschen</th>
           </tr>
           <tbody>
             {

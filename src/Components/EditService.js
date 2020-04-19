@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { view } from '@risingstack/react-easy-state';
 import services from '../States/ServiceState';
-import App from '../App.css';
+import '../App.css';
 
 export class EditService extends Component {
   onSubmit = (e) => {
@@ -35,7 +35,7 @@ export class EditService extends Component {
             name="employee"
             className="dropdown"
         >{services.employees.map(employee => {
-          if(employee.name === services.serviceToEdit.name){
+          if(employee.id === services.serviceToEdit.id){
             return (<option selected="selected" value={employee.id}>{employee.name}</option>)
           }
           else{
