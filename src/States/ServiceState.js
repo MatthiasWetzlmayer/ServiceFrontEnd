@@ -2,7 +2,6 @@ import {
     store
 } from '@risingstack/react-easy-state';
 import DataService from '../Manager/DataService';
-import Alert from '@material-ui/lab/Alert';
 
 const privateVars = {
     allServices: [],
@@ -72,7 +71,7 @@ const services = store({
             services.services = services.services.filter(x => x.id !== res.data.id);
             services.nrAllServices--;
             services.updateAlert("Löschen erfolgreich", "success");
-            services.loadServices();
+            
         })
         .catch(error => {
             services.updateAlert(error.response.data.message, "error");

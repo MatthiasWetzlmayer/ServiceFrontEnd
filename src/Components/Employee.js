@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { view } from '@risingstack/react-easy-state';
-import employees from '../States/EmployeeState'
 import employeeState from '../States/EmployeeState';
 
 export class Employee extends Component {

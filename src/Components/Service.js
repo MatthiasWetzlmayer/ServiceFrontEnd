@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { view } from '@risingstack/react-easy-state';
-import App from '../App.css'
+import '../App.css'
 import services from '../States/ServiceState'
 
 export class Service extends Component {

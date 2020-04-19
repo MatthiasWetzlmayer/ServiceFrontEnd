@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { view } from '@risingstack/react-easy-state';
 import ServiceTable from './ServiceTable';
-import App from '../App.css';
+import '../App.css';
 import services from '../States/ServiceState';
 
 export class ServiceView extends Component {

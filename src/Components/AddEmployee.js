@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { view } from '@risingstack/react-easy-state';
 import employeeState from '../States/EmployeeState';
-import App from '../App.css';
+import '../App.css';
 
 export class AddEmployee extends Component {
   onSubmit = (e) => {

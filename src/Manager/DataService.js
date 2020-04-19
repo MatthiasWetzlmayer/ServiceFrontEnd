@@ -14,7 +14,6 @@ const DataService = {
 
     loadServices: (min, max) => {
         return new EventSource(`http://localhost:8080/services?min=${min}&max=${max}`);
-        // return axios.get(`http://localhost:8080/services?min=${min}&max=${max}`);
     },
 
     serviceSize: () => {

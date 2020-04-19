@@ -4,8 +4,7 @@ import Services from './Components/Services'
 import Employees from './Components/Employees'
 import {GoogleApiWrapper} from 'google-maps-react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { findByLabelText } from '@testing-library/react';
-import app from './App.css'
+import './App.css';
 
 
 function App() {

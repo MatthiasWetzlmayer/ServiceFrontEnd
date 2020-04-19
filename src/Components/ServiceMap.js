@@ -18,10 +18,7 @@ export class ServiceMap extends Component {
         >
           {services.services.map(x => (
             <Marker title={x.name} position={{ lat: x.lat, lng: x.lon }}></Marker>
-
-          )
-          )
-          }
+          ))}
         </Map>
       </div>
     )
