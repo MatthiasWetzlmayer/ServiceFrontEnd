@@ -115,9 +115,9 @@ export class EmployeeView extends Component {
           <div className="textStyle">Einträgen an</div>
 
           <div className="footerRightStyle">
-            <button id="previous" disabled={employeeState.min === 1} className={employeeState.min === 1 ? "button disabled" : "button"} onClick={this.previousButtonClicked}>Vorherige</button>
+            <button id="previous" disabled={parseInt(employeeState.min) <= 1} className={parseInt(employeeState.min) <= 1 ? "button disabled" : "button"} onClick={this.previousButtonClicked}>Vorherige</button>
             <div id="pageNr" className="textStyle">{employeeState.pageNr}</div>
-            <button id="next" disabled={employeeState.max === employeeState.nrAllEmployees} className={employeeState.max === employeeState.nrAllEmployees ? "button disabled" : "button"} onClick={this.nextButtonClicked}>Nächste</button>
+            <button id="next" disabled={parseInt(employeeState.max) === parseInt(employeeState.nrAllEmployees)} className={parseInt(employeeState.max) === parseInt(employeeState.nrAllEmployees) ? "button disabled" : "button"} onClick={this.nextButtonClicked}>Nächste</button>
           </div>
         </footer>
       </div>

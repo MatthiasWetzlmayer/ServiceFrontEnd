@@ -5,6 +5,7 @@ import DataService from '../Manager/DataService';
 
 const privateVars = {
     allServices: [],
+    min: -1
 }
 
 const services = store({
@@ -15,7 +16,7 @@ const services = store({
     min: 0,
     max: 0,
     showEntries: 0,
-    nrAllServices: 0,
+    nrAllServices: -1,
     pageNr: 1,
     showAddService: false,
     showEditService: false,
@@ -47,14 +48,14 @@ const services = store({
     addService: (serviceDTO) => {
         services.disableAlert();
         DataService.addService(serviceDTO).then(res => {
-            services.services.push(res.data);
-            services.showAddService = false;
-            services.nrAllServices++;
-            services.updateAlert("Hinzufügen Erfolgreich", "success");
-        })
-        .catch(error => {
-            services.updateAlert(error.response.data.message, "error");
-        });
+                services.services.push(res.data);
+                services.showAddService = false;
+                services.nrAllServices++;
+                services.updateAlert("Hinzufügen Erfolgreich", "success");
+            })
+            .catch(error => {
+                services.updateAlert(error.response.data.message, "error");
+            });
     },
     setServiceToEdit: (service) => {
         services.disableAlert();
@@ -69,25 +70,41 @@ const services = store({
     },
     deleteService: (serviceId) => {
         services.disableAlert();
-        if(serviceId ===services.serviceToEdit.id){
+        if (serviceId === services.serviceToEdit.id) {
             services.serviceToEdit = {};
             services.showEditService = false;
         }
-        
+
         DataService.deleteService(serviceId).then(res => {
-            services.services = services.services.filter(x => x.id !== res.data.id);
-            services.nrAllServices--;
-            services.updateAlert("Löschen erfolgreich", "success");
-            
-        })
-        .catch(error => {
-            services.updateAlert(error.response.data.message, "error");
-        });
+                services.nrAllServices--;
+                services.services = services.services.filter(x => x.id !== res.data.id);
+                services.updateAlert("Löschen erfolgreich", "success");
+
+                if (parseInt(services.max) > parseInt(services.nrAllServices)) {
+                    services.max = services.nrAllServices;
+                }
+
+                if (parseInt(services.nrAllEmployees) === 0) {
+                    services.min = 0;
+                    services.max = 0;
+                } else if (parseInt(services.min) > parseInt(services.nrAllServices)) {
+                    services.min = parseInt(services.min) - parseInt(services.showEntries);
+                    services.max = parseInt(services.max) - parseInt(services.nrAllServices) % parseInt(services.showEntries);
+                    services.loadServices();
+                }
+
+                if (parseInt(services.max) !== parseInt(services.nrAllServices)) {
+                    privateVars.min = services.max;
+                    services.loadServices(true);
+                }
+            })
+            .catch(error => {
+                services.updateAlert(error.response.data.message, "error");
+            });
     },
     editService: (serviceDTO) => {
         services.disableAlert();
         DataService.editService(services.serviceToEdit.id, serviceDTO).then(res => {
-                console.log(res.data);
 
                 for (var i = 0; i < services.services.length; ++i) {
                     if (services.services[i].id === services.serviceToEdit.id) {
@@ -99,7 +116,6 @@ const services = store({
                 services.showEditService = false;
 
                 services.updateAlert("Bearbeiten erfolgreich", "success");
-
             })
             .catch(error => {
                 services.updateAlert(error.response.data.message, "error");
@@ -107,34 +123,51 @@ const services = store({
 
 
     },
-    loadServices: () => {
-        services.disableAlert();
-        services.services = [];
-        let isOpen = false;
-        let eventSource = DataService.loadServices(services.min, services.max)
+    loadServices: (loadOneService) => {
+        if (parseInt(services.nrAllServices) === 0) {
+            services.min = 0;
+            services.max = 0;
+            services.updateAlert("Keine Dienste in der Datenbank!", "info");
+        } else {
 
-        eventSource.onopen = e => {
-            if (isOpen) {
-                eventSource.close();
+
+            if (!loadOneService) {
+                services.disableAlert();
+            }
+            let eventSource;
+            if (loadOneService) {
+                eventSource = DataService.loadServices(privateVars.min, services.max);
+                privateVars.min = -1;
+
             } else {
-                isOpen = true;
+                eventSource = DataService.loadServices(services.min, services.max);
+
+                services.services = [];
             }
-        }
-        eventSource.onmessage = e => {
+            let isOpen = false;
 
-            services.services.push(JSON.parse(e.data));
-            if (services.nrAllServices < services.max) {
-                services.max = services.nrAllServices;
+            eventSource.onopen = e => {
+                if (isOpen) {
+                    eventSource.close();
+                } else {
+                    isOpen = true;
+                }
             }
+            eventSource.onmessage = e => {
+                services.services.push(JSON.parse(e.data));
+                if (services.nrAllServices < services.max) {
+                    services.max = services.nrAllServices;
+                }
+            }
+
+            DataService.loadAllEmployees().then(res => {
+                    services.employees = res.data;
+                })
+                .catch(error => {
+                    services.updateAlert(error.response.data.message, "error");
+                })
+
         }
-
-        DataService.loadAllEmployees().then(res => {
-            services.employees = res.data;
-        })
-        .catch(error => {
-            services.showAlert(error.response.data.message, "error");
-        })
-
     },
     filterServices: (searchString) => {
         services.disableAlert();

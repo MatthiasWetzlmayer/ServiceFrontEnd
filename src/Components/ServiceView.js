@@ -9,7 +9,6 @@ export class ServiceView extends Component {
 
   componentDidMount (){
     services.initalize();
-    console.log("NrAllServices: " + services.nrAllServices);
     services.min = 1;
     services.max = document.getElementById("entries").value;
     services.showEntries = services.max;
@@ -144,16 +143,16 @@ export class ServiceView extends Component {
               <button 
                 id="previous"
                 onClick={this.previousButtonClicked}
-                className={services.min === 1 ? "button disabled" : "button"}
-                disabled = {services.min === 1}
+                className={parseInt(services.min) <= 1 ? "button disabled" : "button"}
+                disabled = {parseInt(services.min) <= 1}
                 >Vorherige
                 </button>
               <div id="pageNr" className="textStyle">{services.pageNr}</div>
               <button
                 id="next"
                 onClick={this.nextButtonClicked} 
-                className={services.max === services.nrAllServices || services.max === "" ? "button disabled" : "button"}
-                disabled = {services.max === services.nrAllServices || services.max === ""}
+                className={parseInt(services.max) === parseInt(services.nrAllServices) || services.max === "" ? "button disabled" : "button"}
+                disabled = {parseInt(services.max) === parseInt(services.nrAllServices) || services.max === ""}
                 >Nächste</button>
           </div>
         </footer>
