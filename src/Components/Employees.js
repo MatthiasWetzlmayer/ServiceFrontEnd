@@ -10,11 +10,11 @@ export class Employees extends Component {
   render() {
     return (
       <div>
+        {employeeState.customAlert.showAlert && <Alert severity={employeeState.customAlert.alertSeverity} variant="filled">{employeeState.customAlert.alertMessage}</Alert>}
         <EmployeeView></EmployeeView>
-        {employeeState.customAlert.showAlert&&<Alert severity={employeeState.customAlert.alertSeverity} variant="filled">{employeeState.customAlert.alertMessage}</Alert>}
 
-        {employeeState.showAddEmployee&&<AddEmployee></AddEmployee>}
-        {employeeState.showEditEmployee&&<EditEmployee></EditEmployee>}
+        {employeeState.showAddEmployee && <AddEmployee></AddEmployee>}
+        {employeeState.showEditEmployee && <EditEmployee></EditEmployee>}
       </div>
     )
   }

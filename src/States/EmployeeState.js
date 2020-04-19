@@ -12,6 +12,7 @@ const employeeState = store({
     employees: [],
 
     employeeToEdit: {},
+    employeeToDelete: null,
 
     min: 0,
     max: 0,
@@ -35,6 +36,7 @@ const employeeState = store({
 
     disableAlert: () => {
         employeeState.customAlert.showAlert = false;
+        employeeState.employeeToDelete = null;
     },
 
     resetAlertAfterAmount: (seconds) => {
@@ -60,6 +62,7 @@ const employeeState = store({
             });
     },
     setEmployeeToEdit: (employee) => {
+        employeeState.disableAlert();
         if (employeeState.employeeToEdit.id === employee.id) {
             employeeState.employeeToEdit = {};
             employeeState.showEditEmployee = false;
@@ -92,6 +95,7 @@ const employeeState = store({
 
     deleteEmployee: (empId) => {
         employeeState.disableAlert();
+        employeeState.employeeToDelete = null;
         DataService.deleteEmployee(empId).then(res => {
                 employeeState.nrAllEmployees--;
                 employeeState.employees = employeeState.employees.filter(x => x.id !== res.data.id);
