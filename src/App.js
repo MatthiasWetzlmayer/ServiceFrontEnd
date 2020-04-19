@@ -14,8 +14,8 @@ function App() {
     <div>
 
       <div className="navStyles">
-        <a className="button navItem" href="/services">Servicemanagement</a>
-        <a className="button navItem" href="/employees">Employeemanagement</a>
+        <a className="button navItem" href="/services">Dienstverwaltung</a>
+        <a className="button navItem" href="/employees">Mitarbeiterverwaltung</a>
       </div>
       <Router>
         <Route path="/services" component={Services} />

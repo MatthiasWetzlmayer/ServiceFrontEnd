@@ -76,6 +76,7 @@ const employeeState = store({
         employeeState.showAlert = false;
         DataService.deleteEmployee(empId).then(res => {
             employeeState.employees = employeeState.employees.filter(x => x.id !== res.data.id);
+            employeeState.nrAllEmployees--;
             employeeState.updateAlert("Löschen erfolgreich", "success");
         })
         .catch(error => {

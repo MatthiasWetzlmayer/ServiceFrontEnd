@@ -2,7 +2,7 @@ import {
     store
 } from '@risingstack/react-easy-state';
 import DataService from '../Manager/DataService';
-import SelectInput from '@material-ui/core/Select/SelectInput';
+import Alert from '@material-ui/lab/Alert';
 
 const privateVars = {
     allServices: [],
@@ -63,12 +63,19 @@ const services = store({
     },
     deleteService: (serviceId) => {
         services.showAlert = false;
+        if(serviceId ===services.serviceToEdit.id){
+            services.serviceToEdit = {};
+            services.showEditService = false;
+        }
+        
         DataService.deleteService(serviceId).then(res => {
             services.services = services.services.filter(x => x.id !== res.data.id);
-            services.updateAlert("Löschen", "success");
+            services.nrAllServices--;
+            services.updateAlert("Löschen erfolgreich", "success");
+            services.loadServices();
         })
         .catch(error => {
-            services.updateAlert(error.response.data.message, "errror");
+            services.updateAlert(error.response.data.message, "error");
         });
     },
     editService: (serviceDTO) => {

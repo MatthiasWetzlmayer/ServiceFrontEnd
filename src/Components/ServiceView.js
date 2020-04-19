@@ -81,7 +81,7 @@ export class ServiceView extends Component {
       <div >
         <header>
         
-            <div className="textStyle">Show</div>    
+            <div className="textStyle">Zeige</div>    
             <div>
               <select 
                 name="entries"
@@ -93,10 +93,10 @@ export class ServiceView extends Component {
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="25">25</option>
-                <option value="">All</option>
+                <option value="">Alle</option>
               </select>
             </div>
-            <div className="textStyle">entries</div>
+            <div className="textStyle">Einträge an</div>
 
             <button 
             className="button specialButtonStyle"
@@ -106,7 +106,7 @@ export class ServiceView extends Component {
             </button>
 
             <div className="rightStyle">
-              <label for="search">Search: </label>
+              <label for="search">Suche: </label>
               <input 
                 name="search"
                 id="search" 
@@ -116,25 +116,23 @@ export class ServiceView extends Component {
             </div>
           
         </header>
-        <br></br>
         <ServiceTable services={services.services}></ServiceTable>
-        <br></br>
         <footer>
-          <div className="textStyle">Showing</div>
+          <div className="textStyle">Zeige</div>
           <div
             className={services.max === "" ? "hide" : ""}
           >{services.min}</div>
           <div 
           className={services.max === "" ? "hide textStyle" : "textStyle"}
-          >to</div>
-          <div>{services.max === "" ? "All" : services.max}</div>
+          >von</div>
+          <div>{services.max === "" ? "alle" : services.max}</div>
           <div 
           className={services.max === "" ? "hide textStyle" : "textStyle"}
-          >of</div>
+          >bis</div>
           <div
           className={services.max === "" ? "hide" : ""}
           >{services.nrAllServices}</div>
-          <div className="textStyle">Entries</div>
+          <div className="textStyle">Einträge an</div>
 
           <button 
           className="button specialButtonStyle" 
@@ -148,7 +146,7 @@ export class ServiceView extends Component {
                 onClick={this.previousButtonClicked}
                 className={services.min == 1 ? "button disabled" : "button"}
                 disabled = {services.min == 1}
-                >Previous
+                >Vorherige
                 </button>
               <div id="pageNr" className="textStyle">{services.pageNr}</div>
               <button
@@ -156,7 +154,7 @@ export class ServiceView extends Component {
                 onClick={this.nextButtonClicked} 
                 className={services.max == services.nrAllServices || services.max === "" ? "button disabled" : "button"}
                 disabled = {services.max == services.nrAllServices || services.max === ""}
-                >Next</button>
+                >Nächste</button>
           </div>
         </footer>
       </div>
