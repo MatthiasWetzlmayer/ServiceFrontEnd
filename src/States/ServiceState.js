@@ -77,14 +77,17 @@ const services = store({
     },
     setServiceToEdit: (service) => {
         services.disableAlert();
+  
         if (services.serviceToEdit.id === service.id) {
-            console.log("if");
             services.serviceToEdit = {};
             services.showEditService = false;
         } else {
-            services.serviceToEdit = service;
-            console.log(services.serviceToEdit);
-            services.showEditService = true;
+            services.serviceToEdit = {};
+            services.showEditService = false;
+            setTimeout(() => {
+                services.serviceToEdit = service;
+                services.showEditService = true;
+            }, 0);
         }
 
     },

@@ -18,6 +18,7 @@ export class EditService extends Component {
 
   render() {
     return (
+      
     <form onSubmit={this.onSubmit}>
         <label for="name">Name: </label>
         <input
@@ -26,7 +27,6 @@ export class EditService extends Component {
             name="name"
             defaultValue={services.serviceToEdit.name}
         ></input>
-        
         <br/>
 
         <label for="employee">Mitarbeiter: </label>
