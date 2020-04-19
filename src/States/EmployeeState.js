@@ -37,13 +37,23 @@ const employeeState = store({
         employeeState.customAlert.showAlert = false;
     },
 
+    resetAlertAfterAmount: (seconds) => {
+        setTimeout(() => {
+            employeeState.disableAlert();
+        }, seconds);
+    },
+
     addEmployee: (employeeDTO) => {
         employeeState.disableAlert();
         DataService.addEmployee(employeeDTO).then(res => {
-                employeeState.employees.push(res.data);
+                if (parseInt(employeeState.max) / parseInt(employeeState.pageNr) < parseInt(employeeState.showEntries)) {
+                    employeeState.employees.push(res.data);
+                }
+
                 employeeState.showAddEmployee = false;
                 employeeState.nrAllEmployees++;
                 employeeState.updateAlert("Hinzufügen erfolgreich", "success");
+                employeeState.resetAlertAfterAmount(3000);
             })
             .catch(error => {
                 employeeState.updateAlert(error.response.data.message, "error");
@@ -73,6 +83,7 @@ const employeeState = store({
                 employeeState.showEditEmployee = false;
 
                 employeeState.updateAlert("Bearbeiten erfolgreich", "success");
+                employeeState.resetAlertAfterAmount(3000);
             })
             .catch(error => {
                 employeeState.updateAlert(error.response.data.message, "error");
@@ -85,6 +96,7 @@ const employeeState = store({
                 employeeState.nrAllEmployees--;
                 employeeState.employees = employeeState.employees.filter(x => x.id !== res.data.id);
                 employeeState.updateAlert("Löschen erfolgreich", "success");
+                employeeState.resetAlertAfterAmount(3000);
 
                 if (parseInt(employeeState.max) > parseInt(employeeState.nrAllEmployees)) {
                     employeeState.max = employeeState.nrAllEmployees;
@@ -93,6 +105,7 @@ const employeeState = store({
                 if (parseInt(employeeState.nrAllEmployees) === 0) {
                     employeeState.min = 0;
                     employeeState.max = 0;
+                    employeeState.loadEmployees();
                 } else if (parseInt(employeeState.min) > parseInt(employeeState.nrAllEmployees)) {
                     employeeState.min = parseInt(employeeState.min) - parseInt(employeeState.showEntries);
                     employeeState.max = parseInt(employeeState.max) - parseInt(employeeState.nrAllEmployees) % parseInt(employeeState.showEntries);
@@ -110,7 +123,6 @@ const employeeState = store({
             });
     },
     loadEmployees: (loadOneEmployee) => {
-        
 
         if (parseInt(employeeState.nrAllEmployees) === 0) {
             employeeState.min = 0;

@@ -21,6 +21,7 @@ const services = store({
     showAddService: false,
     showEditService: false,
     showOnMap: false,
+    eventSource: null,
 
     customAlert: {
         alertMessage: "",
@@ -45,13 +46,22 @@ const services = store({
         services.customAlert.showAlert = false;
     },
 
+    resetAlertAfterAmount: (seconds) => {
+        setTimeout( () => {
+            services.disableAlert();
+        }, seconds);
+    },
+
     addService: (serviceDTO) => {
         services.disableAlert();
         DataService.addService(serviceDTO).then(res => {
-                services.services.push(res.data);
+                if(parseInt(services.max) / parseInt(services.pageNr) < parseInt(services.showEntries)){
+                    services.services.push(res.data);
+                }
                 services.showAddService = false;
                 services.nrAllServices++;
                 services.updateAlert("Hinzufügen Erfolgreich", "success");
+                services.resetAlertAfterAmount(3000);
             })
             .catch(error => {
                 services.updateAlert(error.response.data.message, "error");
@@ -79,6 +89,7 @@ const services = store({
                 services.nrAllServices--;
                 services.services = services.services.filter(x => x.id !== res.data.id);
                 services.updateAlert("Löschen erfolgreich", "success");
+                services.resetAlertAfterAmount(3000);
 
                 if (parseInt(services.max) > parseInt(services.nrAllServices)) {
                     services.max = services.nrAllServices;
@@ -116,6 +127,7 @@ const services = store({
                 services.showEditService = false;
 
                 services.updateAlert("Bearbeiten erfolgreich", "success");
+                services.resetAlertAfterAmount(3000);
             })
             .catch(error => {
                 services.updateAlert(error.response.data.message, "error");
@@ -130,30 +142,35 @@ const services = store({
             services.updateAlert("Keine Dienste in der Datenbank!", "info");
         } else {
 
-
             if (!loadOneService) {
                 services.disableAlert();
             }
-            let eventSource;
+
+            if(services.eventSource){
+                services.eventSource.close();
+                services.eventSource = null;
+            }
+           
             if (loadOneService) {
-                eventSource = DataService.loadServices(privateVars.min, services.max);
+                services.eventSource = DataService.loadServices(privateVars.min, services.max);
                 privateVars.min = -1;
 
             } else {
-                eventSource = DataService.loadServices(services.min, services.max);
+                services.eventSource = DataService.loadServices(services.min, services.max);
 
                 services.services = [];
             }
             let isOpen = false;
 
-            eventSource.onopen = e => {
+            services.eventSource.onopen = e => {
                 if (isOpen) {
-                    eventSource.close();
+                    services.eventSource.close();
+                    services.eventSource = null;
                 } else {
                     isOpen = true;
                 }
             }
-            eventSource.onmessage = e => {
+            services.eventSource.onmessage = e => {
                 services.services.push(JSON.parse(e.data));
                 if (services.nrAllServices < services.max) {
                     services.max = services.nrAllServices;
