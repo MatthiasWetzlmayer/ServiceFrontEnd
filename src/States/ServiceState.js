@@ -70,10 +70,12 @@ const services = store({
     setServiceToEdit: (service) => {
         services.disableAlert();
         if (services.serviceToEdit.id === service.id) {
+            console.log("if");
             services.serviceToEdit = {};
             services.showEditService = false;
         } else {
             services.serviceToEdit = service;
+            console.log(services.serviceToEdit);
             services.showEditService = true;
         }
 
@@ -91,7 +93,7 @@ const services = store({
                 services.updateAlert("Löschen erfolgreich", "success");
                 services.resetAlertAfterAmount(3000);
 
-                if (parseInt(services.max) > parseInt(services.nrAllServices)) {
+                if (parseInt(services.max) > parseInt(services.nrAllServices) || services.max === "") {
                     services.max = services.nrAllServices;
                 }
 

@@ -98,7 +98,7 @@ const employeeState = store({
                 employeeState.updateAlert("Löschen erfolgreich", "success");
                 employeeState.resetAlertAfterAmount(3000);
 
-                if (parseInt(employeeState.max) > parseInt(employeeState.nrAllEmployees)) {
+                if (parseInt(employeeState.max) > parseInt(employeeState.nrAllEmployees) || employeeState.max === "") {
                     employeeState.max = employeeState.nrAllEmployees;
                 }
 
