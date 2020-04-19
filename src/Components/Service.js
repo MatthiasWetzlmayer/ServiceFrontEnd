@@ -10,7 +10,7 @@ export class Service extends Component {
       <tr>
           <td>{service.id}</td>
           <td>{service.name}</td>
-          <td>{service.employee.name}</td>
+          <td>{service.employee == null ? <span style={employeeNotAssignedStyle}>Mitarbeiter nicht zugewiesen</span> : service.employee.name}</td>
           <td>{service.date}</td>
           <td>{service.address}</td>
           <td><button className="button" onClick={()=>services.setServiceToEdit(service)}>{services.showEditService && service.id === services.serviceToEdit.id ? "Bearbeiten beenden" : "Bearbeiten"}</button></td>
@@ -18,6 +18,10 @@ export class Service extends Component {
       </tr>
     )
   }
+}
+
+const employeeNotAssignedStyle = {
+  color: "red"
 }
 
 export default view(Service)
