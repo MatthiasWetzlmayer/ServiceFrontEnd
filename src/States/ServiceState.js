@@ -47,7 +47,7 @@ const services = store({
     },
 
     resetAlertAfterAmount: (seconds) => {
-        setTimeout( () => {
+        setTimeout(() => {
             services.disableAlert();
         }, seconds);
     },
@@ -55,11 +55,19 @@ const services = store({
     addService: (serviceDTO) => {
         services.disableAlert();
         DataService.addService(serviceDTO).then(res => {
-                if(parseInt(services.max) / parseInt(services.pageNr) < parseInt(services.showEntries)){
-                    services.services.push(res.data);
-                }
+
                 services.showAddService = false;
                 services.nrAllServices++;
+                if (parseInt(services.min) === 0 && 0 === parseInt(services.max)) {
+                    services.services.push(res.data);
+                    services.pageNr = 1;
+                    services.min = 1;
+                    services.max = 1;
+
+                } else if (parseInt(services.max) / parseInt(services.pageNr) < parseInt(services.showEntries)) {
+                    services.services.push(res.data);
+                    services.max++;
+                }
                 services.updateAlert("Hinzufügen Erfolgreich", "success");
                 services.resetAlertAfterAmount(3000);
             })
@@ -93,23 +101,39 @@ const services = store({
                 services.updateAlert("Löschen erfolgreich", "success");
                 services.resetAlertAfterAmount(3000);
 
+
+                //The Max value can not be more than all Services in the DB
                 if (parseInt(services.max) > parseInt(services.nrAllServices) || services.max === "") {
                     services.max = services.nrAllServices;
                 }
 
-                if (parseInt(services.nrAllEmployees) === 0) {
+                //If there are no Services show the alert in loadServices()
+                if (parseInt(services.nrAllServices) === 0) {
                     services.min = 0;
                     services.max = 0;
+                    services.loadServices();
+                    //If you delete the last Service on a page, go back one page and load the according services
                 } else if (parseInt(services.min) > parseInt(services.nrAllServices)) {
                     services.min = parseInt(services.min) - parseInt(services.showEntries);
                     services.max = parseInt(services.max) - parseInt(services.nrAllServices) % parseInt(services.showEntries);
+                    services.pageNr--;
                     services.loadServices();
                 }
-
-                if (parseInt(services.max) !== parseInt(services.nrAllServices)) {
+                //if you delete an entry on the second last side page when there is only one service on the next page you dont need max (because this is one to low)
+                else if (
+                    parseInt(services.max) === parseInt(services.nrAllServices) &&
+                    parseInt(services.showEntries) * parseInt(services.pageNr) <= parseInt(services.nrAllServices)
+                ) {
+                    privateVars.min = services.nrAllServices;
+                    services.loadServices(true);
+                }
+                //load the service of the next page if there is enough space on this page
+                else if (parseInt(services.max) < parseInt(services.nrAllServices)
+                    &&!(parseInt(services.min) === parseInt(services.nrAllServices))) {
                     privateVars.min = services.max;
                     services.loadServices(true);
                 }
+
             })
             .catch(error => {
                 services.updateAlert(error.response.data.message, "error");
@@ -148,11 +172,11 @@ const services = store({
                 services.disableAlert();
             }
 
-            if(services.eventSource){
+            if (services.eventSource) {
                 services.eventSource.close();
                 services.eventSource = null;
             }
-           
+
             if (loadOneService) {
                 services.eventSource = DataService.loadServices(privateVars.min, services.max);
                 privateVars.min = -1;
@@ -168,8 +192,13 @@ const services = store({
                 if (isOpen) {
                     services.eventSource.close();
                     services.eventSource = null;
+
                 } else {
-                    isOpen = true;
+                    if (parseInt(services.nrAllServices) === 0) {
+                        services.loadServices();
+                    } else {
+                        isOpen = true;
+                    }
                 }
             }
             services.eventSource.onmessage = e => {
@@ -178,6 +207,7 @@ const services = store({
                     services.max = services.nrAllServices;
                 }
             }
+
 
             DataService.loadAllEmployees().then(res => {
                     services.employees = res.data;
