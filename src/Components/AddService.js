@@ -7,8 +7,6 @@ export class AddService extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    console.log(e.target);
-
     var serviceDTO = {
       name: e.target.name.value,
       employeeId: e.target.employee.value,

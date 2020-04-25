@@ -3,6 +3,23 @@ body {
   
 }
 
+.alertContainer{
+  display: flex;
+  position: fixed;
+  width: 100%;
+}
+
+.alertDiv{
+  flex-grow: 1;
+}
+
+.alert{
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  flex-grow: 1;
+}
+
 .button {
   background-color: rgb(129, 129, 129);
   border: none;
