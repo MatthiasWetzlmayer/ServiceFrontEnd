@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { view } from '@risingstack/react-easy-state';
 import EmployeeTable from './EmployeeTable';
 import employeeState from '../States/EmployeeState';
-import '../App.css';
+
 
 export class EmployeeView extends Component {
 
@@ -17,7 +17,6 @@ export class EmployeeView extends Component {
 
   selectionChanged = (e) => {
     e.preventDefault();
-    employeeState.disableAlert();
     employeeState.showEntries = e.target.value;
     employeeState.min = 1;
     employeeState.max = employeeState.showEntries;
@@ -27,13 +26,11 @@ export class EmployeeView extends Component {
 
   searchChanged = (e) => {
     e.preventDefault();
-    employeeState.disableAlert();
     employeeState.filterEmployees(e.target.value);
   }
 
   nextButtonClicked = (e) => {
     e.preventDefault();
-    employeeState.disableAlert();
     employeeState.min = parseInt(employeeState.min) + parseInt(employeeState.showEntries);
     employeeState.max = parseInt(employeeState.max) + parseInt(employeeState.showEntries);
     employeeState.loadEmployees();
@@ -55,7 +52,6 @@ export class EmployeeView extends Component {
   }
 
   addEmployee = () => {
-    employeeState.disableAlert();
     employeeState.showAddEmployee = !employeeState.showAddEmployee;
   }
 

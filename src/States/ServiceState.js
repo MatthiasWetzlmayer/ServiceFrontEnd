@@ -32,7 +32,6 @@ const services = store({
     initalize: () => {
         DataService.serviceSize().then(res => {
             services.nrAllServices = res.data;
-            console.log("Res: " + res.data);
         });
     },
 
@@ -42,18 +41,14 @@ const services = store({
         services.customAlert.alertSeverity = severity;
     },
 
-    disableAlert: () => {
-        services.customAlert.showAlert = false;
-    },
 
     resetAlertAfterAmount: (seconds) => {
         setTimeout(() => {
-            services.disableAlert();
+            services.customAlert.showAlert = false;
         }, seconds);
     },
 
     addService: (serviceDTO) => {
-        services.disableAlert();
         DataService.addService(serviceDTO).then(res => {
 
                 services.showAddService = false;
@@ -73,11 +68,13 @@ const services = store({
             })
             .catch(error => {
                 services.updateAlert(error.response.data.message, "error");
+                services.resetAlertAfterAmount(4000);
             });
+
+            services.updateAlert("Dienst wird angelegt...", "info");
+            services.resetAlertAfterAmount(3000);
     },
     setServiceToEdit: (service) => {
-        services.disableAlert();
-  
         if (services.serviceToEdit.id === service.id) {
             services.serviceToEdit = {};
             services.showEditService = false;
@@ -92,7 +89,6 @@ const services = store({
 
     },
     deleteService: (serviceId) => {
-        services.disableAlert();
         if (serviceId === services.serviceToEdit.id) {
             services.serviceToEdit = {};
             services.showEditService = false;
@@ -140,10 +136,13 @@ const services = store({
             })
             .catch(error => {
                 services.updateAlert(error.response.data.message, "error");
+                services.resetAlertAfterAmount(4000);
             });
+
+            services.updateAlert("Dienst wird gelöscht...", "info");
+            services.resetAlertAfterAmount(3000);
     },
     editService: (serviceDTO) => {
-        services.disableAlert();
         DataService.editService(services.serviceToEdit.id, serviceDTO).then(res => {
 
                 for (var i = 0; i < services.services.length; ++i) {
@@ -160,8 +159,10 @@ const services = store({
             })
             .catch(error => {
                 services.updateAlert(error.response.data.message, "error");
+                services.resetAlertAfterAmount(4000);
             });
-
+            services.updateAlert("Dienst wird bearbeitet...", "info");
+            services.resetAlertAfterAmount(3000);
 
     },
     loadServices: (loadOneService) => {
@@ -170,10 +171,6 @@ const services = store({
             services.max = 0;
             services.updateAlert("Keine Dienste in der Datenbank!", "info");
         } else {
-
-            if (!loadOneService) {
-                services.disableAlert();
-            }
 
             if (services.eventSource) {
                 services.eventSource.close();
@@ -195,7 +192,7 @@ const services = store({
                 if (isOpen) {
                     services.eventSource.close();
                     services.eventSource = null;
-
+                    
                 } else {
                     if (parseInt(services.nrAllServices) === 0) {
                         services.loadServices();
@@ -211,6 +208,7 @@ const services = store({
                 }
             }
 
+      
 
             DataService.loadAllEmployees().then(res => {
                     services.employees = res.data;
@@ -222,13 +220,9 @@ const services = store({
         }
     },
     filterServices: (searchString) => {
-        services.disableAlert();
-        console.log(privateVars.allServices);
         if (privateVars.allServices.length < 1) {
-            console.log("Set private vars");
             privateVars.allServices = services.services;
         }
-        console.log("SearchString: " + searchString);
         if (searchString.length < 1) {
             services.services = privateVars.allServices;
             privateVars.allServices = [];
