@@ -11,7 +11,7 @@ export class UpdateEmployee extends Component {
       name: e.target.name.value,
       address: e.target.address.value,
     };
-    employeeState.editEmployee(employeeState.employeeToEdit.id ,employeeDTO);
+    employeeState.editEmployee(employeeDTO);
   }
 
   render() {

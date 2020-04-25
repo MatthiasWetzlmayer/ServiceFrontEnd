@@ -12,6 +12,7 @@ const employeeState = store({
     employees: [],
 
     employeeToEdit: {},
+    employeeToDelete: null,
 
     min: 0,
     max: 0,
@@ -33,21 +34,20 @@ const employeeState = store({
         employeeState.customAlert.alertSeverity = severity;
     },
 
-    disableAlert: () => {
-        employeeState.customAlert.showAlert = false;
-    },
+  
 
     resetAlertAfterAmount: (seconds) => {
         setTimeout(() => {
-            employeeState.disableAlert();
+            employeeState.customAlert.showAlert = false;
+            employeeState.employeeToDelete = null;
         }, seconds);
     },
 
     addEmployee: (employeeDTO) => {
-        employeeState.disableAlert();
         DataService.addEmployee(employeeDTO).then(res => {
             employeeState.showAddEmployee = false;
             employeeState.nrAllEmployees++;
+
 
                 if (parseInt(employeeState.max) / parseInt(employeeState.pageNr) < parseInt(employeeState.showEntries)) {
                     employeeState.employees.push(res.data);
@@ -59,13 +59,18 @@ const employeeState = store({
                     employeeState.max++;
                 }
 
-               
+
                 employeeState.updateAlert("Hinzufügen erfolgreich", "success");
                 employeeState.resetAlertAfterAmount(3000);
             })
             .catch(error => {
                 employeeState.updateAlert(error.response.data.message, "error");
+                employeeState.resetAlertAfterAmount(4000);
+
             });
+            employeeState.updateAlert("Mitarbeiter wird angelegt", "info");
+            employeeState.resetAlertAfterAmount(3000);
+
     },
     setEmployeeToEdit: (employee) => {
         if (employeeState.employeeToEdit.id === employee.id) {
@@ -77,10 +82,8 @@ const employeeState = store({
         }
 
     },
-    editEmployee: (id, employeeDTO) => {
-        employeeState.disableAlert();
+    editEmployee: (employeeDTO) => {
         DataService.editEmployee(employeeState.employeeToEdit.id, employeeDTO).then(res => {
-                console.log(res.data);
                 for (var i = 0; i < employeeState.employees.length; ++i) {
                     if (employeeState.employees[i].id === employeeState.employeeToEdit.id) {
                         employeeState.employees[i] = res.data;
@@ -95,11 +98,16 @@ const employeeState = store({
             })
             .catch(error => {
                 employeeState.updateAlert(error.response.data.message, "error");
+                employeeState.resetAlertAfterAmount(4000);
+
             });
+            employeeState.updateAlert("Mitarbeiter wird bearbeitet", "info");
+            employeeState.resetAlertAfterAmount(3000);
+
     },
 
     deleteEmployee: (empId) => {
-        employeeState.disableAlert();
+        employeeState.employeeToDelete = null;
         DataService.deleteEmployee(empId).then(res => {
                 employeeState.nrAllEmployees--;
                 employeeState.employees = employeeState.employees.filter(x => x.id !== res.data.id);
@@ -116,7 +124,9 @@ const employeeState = store({
                     employeeState.min = 0;
                     employeeState.max = 0;
                     employeeState.loadEmployees();
+
                 //If you delete the last Employee on a page, go back one page and load the according employees 
+
                 } else if (parseInt(employeeState.min) > parseInt(employeeState.nrAllEmployees)) {
                     employeeState.min = parseInt(employeeState.min) - parseInt(employeeState.showEntries);
                     employeeState.max = parseInt(employeeState.max) - parseInt(employeeState.nrAllEmployees) % parseInt(employeeState.showEntries);
@@ -133,6 +143,7 @@ const employeeState = store({
                 }
                 else  if (parseInt(employeeState.max) < parseInt(employeeState.nrAllEmployees)
                 && !(parseInt(employeeState.min) === parseInt(employeeState.nrAllEmployees))){
+
                     privateVars.min = employeeState.max;
                     employeeState.loadEmployees(true);
                 }
@@ -141,7 +152,13 @@ const employeeState = store({
             .catch(error => {
                 console.log(error);
                 employeeState.updateAlert(error.response.data.message, "error");
+                employeeState.resetAlertAfterAmount(4000);
+
             });
+            employeeState.updateAlert("Mitarbeiter wird gelöscht", "info");
+            employeeState.resetAlertAfterAmount(3000);
+
+
     },
     loadEmployees: (loadOneEmployee) => {
 
@@ -149,12 +166,9 @@ const employeeState = store({
             employeeState.min = 0;
             employeeState.max = 0;
             employeeState.updateAlert("Keine Mitarbeiter in der Datenbank!", "info");
+            employeeState.resetAlertAfterAmount(3000);
         } else {
-            if (!loadOneEmployee) {
-                employeeState.disableAlert();
-            }
             DataService.loadEmployees(loadOneEmployee ? privateVars.min : employeeState.min, employeeState.max).then(res => {
-                    console.log(res.data);
                     if (loadOneEmployee) {
                         employeeState.employees.push(res.data[0]);
                         privateVars.min = -1
@@ -164,6 +178,8 @@ const employeeState = store({
                     if (employeeState.nrAllEmployees < employeeState.max) {
                         employeeState.max = employeeState.nrAllEmployees;
                     }
+                    employeeState.updateAlert("Mitarbeiter wurden erfolgreich geladen", "success");
+                    employeeState.resetAlertAfterAmount(3000);
 
                 })
                 .catch(error => {
@@ -172,9 +188,13 @@ const employeeState = store({
                         employeeState.updateAlert(error.response.data.message, "error");
                     }
                     else{
+
                         employeeState.loadEmployees();
                     }
                 });
+            employeeState.updateAlert("Mitarbeiter werden geladen...", "info");
+            employeeState.resetAlertAfterAmount(3000);
+
         }
     },
     filterEmployees: (searchString) => {
@@ -192,7 +212,6 @@ const employeeState = store({
     initalize: () => {
         DataService.employeeSize().then(res => {
             employeeState.nrAllEmployees = res.data;
-            console.log("Res: " + res.data);
         });
     },
 
