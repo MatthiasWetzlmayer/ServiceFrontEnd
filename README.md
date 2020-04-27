@@ -1,6 +1,6 @@
 # DBI-React-Projekt 4B
 
-## Allgemeines
+## Architektur
 Unser Projekt ist in 3 Bereichen gegliedert:
 1. UI
   * Die UI ist in verschieden Komponenten gegliedert, die in `src/Components` gespeichert sind.
@@ -12,7 +12,7 @@ Unser Projekt ist in 3 Bereichen gegliedert:
   * Wir verwenden den Statemanager von Risingstack: https://github.com/RisingStack/react-easy-state.      Dadurch speichern wir alle Daten zentral in dem Statemanger und wenn sich hier Daten ändern          werden die Komponenten neu gerendert.
   * Die Daten werden von der Datenbank über die Datenschicht geladen (Siehe 3. Datenzugriff)
 3. Datenzugriff 
-  * Man kann zwischen 2 Datenquellen wählen: Lokal und Datenbank, dazu gibt es 2 DataServices unter      `src/Manager`: `DataService` und `TestDataService`. Der DataService greift dabei auf die              Datenbank zu (IP-Adresse ist über eine Variable leicht veränderbar), wohingegen der                  TestDataService zum einfachen Testen ohne Datenbank gedacht ist (Siehe [## Testing])
+  * Man kann zwischen 2 Datenquellen wählen: Lokal und Datenbank, dazu gibt es 2 DataServices unter      `src/Manager`: `DataService` und `TestDataService`. Der DataService greift dabei auf die              Datenbank zu (IP-Adresse ist über eine Variable leicht veränderbar), wohingegen der                  TestDataService zum einfachen Testen ohne Datenbank gedacht ist (Siehe [Testing]())
   * Zum Zugriff auf die Datenbank setzen wir Rest-Requests mittels Axios                                  (https://github.com/axios/axios) ab.
 
 ## Ausführung
