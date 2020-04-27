@@ -19,6 +19,7 @@ Unser Projekt ist in 3 Bereichen gegliedert:
 Da dieses Repository nur das Frontend enthält:
 * **EmployeeBackEnd**: https://github.com/MatthiasWetzlmayer/EmployeeBackEnd
 * **ServiceBackEnd**: https://github.com/MatthiasWetzlmayer/ServiceBackEnd
+
 Wir verwenden XAMPP für die Datenbanken. Beim 1. BackEnd Start muss man zuerst die Datenbanken anlegen. Die zu verwendenden Namen sind:
 * servicedatabase
 * employeedatabase
