@@ -3,7 +3,7 @@
 ## Architektur
 Unser Projekt ist in 3 Bereichen gegliedert:
 1. UI
-  * Die UI ist in verschieden Komponenten gegliedert, die in `src/Components` gespeichert sind.
+  * Die UI ist in verschieden Komponenten gegliedert, die in `src/Components` gespeichert sind
   * Die einzelnen Komponenten verwenden je nach Kategorie (Service/Employee) einen State um Daten zu      speichern und Daten zu manipulieren (Siehe 2. Logik)
 2. Logik
   * Es gibt eine Trennung zwischen Services und Employees
@@ -14,13 +14,21 @@ Unser Projekt ist in 3 Bereichen gegliedert:
 3. Datenzugriff 
   * Man kann zwischen 2 Datenquellen wählen: Lokal und Datenbank, dazu gibt es 2 DataServices unter      `src/Manager`: `DataService` und `TestDataService`. Der DataService greift dabei auf die              Datenbank zu (IP-Adresse ist über eine Variable leicht veränderbar), wohingegen der                  TestDataService zum einfachen Testen ohne Datenbank gedacht ist (Siehe [Testing](https://github.com/MatthiasWetzlmayer/ServiceFrontEnd#Testing))
   * Zum Zugriff auf die Datenbank setzen wir Rest-Requests mittels Axios                                  (https://github.com/axios/axios) ab.
+  
+## Backend
+Da dieses Repository nur das Frontend enthält:
+* **EmployeeBackEnd**: https://github.com/MatthiasWetzlmayer/EmployeeBackEnd
+* **ServiceBackEnd**: https://github.com/MatthiasWetzlmayer/ServiceBackEnd
+Wir verwenden XAMPP für die Datenbanken. Beim 1. BackEnd Start muss man zuerst die Datenbanken anlegen. Die zu verwendenden Namen sind:
+* servicedatabase
+* employeedatabase
 
 ## Ausführung
-Voraussetzung zum ausführen ist, dass Node.js installiert ist.
-Nach einem erfolgreichen Git-Clone öffnet man ein Terminal und gibt `npm start` ein. Daraufhin öffnet sich der Browser (falls nicht kann man die Seite unter folgendem Link aufrufen: http://localhost:3000) und man kann das Projekt ausführen.
+Voraussetzung zum Ausführen ist, dass Node.js installiert ist.
+Nach einem erfolgreichen Git-Clone öffnet man ein Terminal und gibt `npm start` ein. Daraufhin öffnet sich ein Browser-Fenster und man kann das Projekt ausführen. (Falls sich kein Fenster öffnet, kann man die Seite unter folgendem Link aufrufen: http://localhost:3000)
 
 ## Testing
-Man kann unser Projekt auch ohne Datenbank ausführen. Dazu muss man den Import des DataService in SerivceState und EmployeeState von 
+Man kann unser Projekt auch ohne Datenbank ausführen. Dazu muss man den Import des DataService in `SerivceState` und `EmployeeState` von 
 ```javascript
 import DataService from '../Manager/DataService';
 ``` 
@@ -28,7 +36,7 @@ zu
 ```javascript 
 import DataService from '../Manager/TestDataService';
 ``` 
-ändern und eine Variable unter privateVars im ServiceState von `false` auf `true` setzen. 
+ändern und eine Variable unter `privateVars` im `ServiceState` von `false` auf `true` setzen. 
 ```javascript
 const privateVars = {
     debugMode: true
