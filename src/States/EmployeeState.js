@@ -1,7 +1,7 @@
 import {
     store
 } from '@risingstack/react-easy-state';
-import DataService from '../Manager/DataService';
+import DataService from '../Manager/TestDataService';
 
 const privateVars = {
     allEmployees: [],
@@ -158,7 +158,8 @@ const employeeState = store({
                 employeeState.disableAlert();
             }
             DataService.loadEmployees(loadOneEmployee ? privateVars.min : employeeState.min, employeeState.max).then(res => {
-                    console.log(res.data);
+                    console.log("Res after load: ");
+                    console.log(res);
                     if (loadOneEmployee) {
                         employeeState.employees.push(res.data[0]);
                         privateVars.min = -1

@@ -1,11 +1,12 @@
 import {
     store
 } from '@risingstack/react-easy-state';
-import DataService from '../Manager/DataService';
+import DataService from '../Manager/TestDataService';
 
 const privateVars = {
     allServices: [],
-    min: -1
+    min: -1,
+    debugMode: true
 }
 
 const services = store({
@@ -77,7 +78,7 @@ const services = store({
     },
     setServiceToEdit: (service) => {
         services.disableAlert();
-  
+
         if (services.serviceToEdit.id === service.id) {
             services.serviceToEdit = {};
             services.showEditService = false;
@@ -131,8 +132,8 @@ const services = store({
                     services.loadServices(true);
                 }
                 //load the service of the next page if there is enough space on this page
-                else if (parseInt(services.max) < parseInt(services.nrAllServices)
-                    &&!(parseInt(services.min) === parseInt(services.nrAllServices))) {
+                else if (parseInt(services.max) < parseInt(services.nrAllServices) &&
+                    !(parseInt(services.min) === parseInt(services.nrAllServices))) {
                     privateVars.min = services.max;
                     services.loadServices(true);
                 }
@@ -175,42 +176,75 @@ const services = store({
                 services.disableAlert();
             }
 
-            if (services.eventSource) {
-                services.eventSource.close();
-                services.eventSource = null;
-            }
+            if (privateVars.debugMode) {
+                DataService.loadServices(loadOneService ? privateVars.min : services.min, services.max).then(res => {
+                    console.log("Res after load: ");
+                    console.log(res);
+                    if (loadOneService) {
+                        services.services.push(res.data[0]);
+                        privateVars.min = -1
+                    } else {
+                        services.services = res.data;
+                        console.log("Services: ");
+                        console.log(services.services);
+                    }
+                    if (services.nrAllServices < services.max) {
+                        services.max = services.nrAllServices;
+                    }
 
-            if (loadOneService) {
-                services.eventSource = DataService.loadServices(privateVars.min, services.max);
-                privateVars.min = -1;
-
+                })
+                .catch(error => {
+                    if(parseInt(services.nrAllServices) !== 0)
+                    {
+                        services.updateAlert(error.response.data.message, "error");
+                    }
+                    else{
+                        services.loadServices();
+                    }
+                });
             } else {
-                services.eventSource = DataService.loadServices(services.min, services.max);
 
-                services.services = [];
-            }
-            let isOpen = false;
 
-            services.eventSource.onopen = e => {
-                if (isOpen) {
+                if (services.eventSource) {
                     services.eventSource.close();
                     services.eventSource = null;
+                }
+
+                if (loadOneService) {
+                    services.eventSource = DataService.loadServices(privateVars.min, services.max);
+                    privateVars.min = -1;
 
                 } else {
-                    if (parseInt(services.nrAllServices) === 0) {
-                        services.loadServices();
+                    services.eventSource = DataService.loadServices(services.min, services.max);
+
+                    console.log(services.eventSource);
+
+                    services.services = [];
+                }
+                let isOpen = false;
+
+                services.eventSource.onopen = e => {
+                    if (isOpen) {
+                        services.eventSource.close();
+                        services.eventSource = null;
+
                     } else {
-                        isOpen = true;
+                        if (parseInt(services.nrAllServices) === 0) {
+                            services.loadServices();
+                        } else {
+                            isOpen = true;
+                        }
+                    }
+                }
+                services.eventSource.onmessage = e => {
+                    console.log("onmessage e: ");
+                    console.log(e);
+                    services.services.push(JSON.parse(e.data));
+                    if (services.nrAllServices < services.max) {
+                        services.max = services.nrAllServices;
                     }
                 }
             }
-            services.eventSource.onmessage = e => {
-                services.services.push(JSON.parse(e.data));
-                if (services.nrAllServices < services.max) {
-                    services.max = services.nrAllServices;
-                }
-            }
-
 
             DataService.loadAllEmployees().then(res => {
                     services.employees = res.data;
