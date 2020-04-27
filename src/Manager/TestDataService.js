@@ -412,7 +412,6 @@ const DataService = {
 
     editService: (id, serviceDTO) => {
         serviceDTO.id = id;
-        console.log(serviceDTO);
 
         let employee;
         DataService.employees.forEach(element => {
@@ -429,8 +428,6 @@ const DataService = {
         service.date = serviceDTO.date;
         service.address = serviceDTO.address;
 
-        console.log(employee);
-        console.log(service);
 
         DataService.services.forEach(element => {
             if (element.id === parseInt(id)) {
@@ -452,17 +449,11 @@ const DataService = {
         }
         min--;
 
-        console.log("Min DS: " + min);
-        console.log("Max DS: " + max);
-
         let length = DataService.services.length;
-        console.log("Length: " + length);
-        
+
         if (parseInt(length) <= parseInt(max)) {
             max = length;
         }
-        console.log("Min DS: " + min);
-        console.log("Max DS: " + max);
         return new Promise((successCallback, failureCallback) => {
             successCallback({
                 data: DataService.services.slice(min, max)
@@ -499,7 +490,6 @@ const DataService = {
         });
 
         DataService.employees = DataService.employees.filter(x => x.id !== parseInt(empId));
-        console.log(DataService.employees);
 
         return new Promise((successCallback, failureCallback) => {
             successCallback({
@@ -543,8 +533,6 @@ const DataService = {
     },
 
     loadEmployees: (min, max) => {
-        console.log("Min: " + min);
-        console.log("Max: " + max);
         if (max === "") {
             return DataService.loadAllEmployees();
         } else {

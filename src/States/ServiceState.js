@@ -33,7 +33,6 @@ const services = store({
     initalize: () => {
         DataService.serviceSize().then(res => {
             services.nrAllServices = res.data;
-            console.log("Res: " + res.data);
         });
     },
 
@@ -178,15 +177,11 @@ const services = store({
 
             if (privateVars.debugMode) {
                 DataService.loadServices(loadOneService ? privateVars.min : services.min, services.max).then(res => {
-                    console.log("Res after load: ");
-                    console.log(res);
                     if (loadOneService) {
                         services.services.push(res.data[0]);
                         privateVars.min = -1
                     } else {
                         services.services = res.data;
-                        console.log("Services: ");
-                        console.log(services.services);
                     }
                     if (services.nrAllServices < services.max) {
                         services.max = services.nrAllServices;
@@ -217,8 +212,6 @@ const services = store({
                 } else {
                     services.eventSource = DataService.loadServices(services.min, services.max);
 
-                    console.log(services.eventSource);
-
                     services.services = [];
                 }
                 let isOpen = false;
@@ -237,8 +230,6 @@ const services = store({
                     }
                 }
                 services.eventSource.onmessage = e => {
-                    console.log("onmessage e: ");
-                    console.log(e);
                     services.services.push(JSON.parse(e.data));
                     if (services.nrAllServices < services.max) {
                         services.max = services.nrAllServices;

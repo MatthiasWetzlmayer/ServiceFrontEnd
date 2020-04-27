@@ -158,8 +158,6 @@ const employeeState = store({
                 employeeState.disableAlert();
             }
             DataService.loadEmployees(loadOneEmployee ? privateVars.min : employeeState.min, employeeState.max).then(res => {
-                    console.log("Res after load: ");
-                    console.log(res);
                     if (loadOneEmployee) {
                         employeeState.employees.push(res.data[0]);
                         privateVars.min = -1
@@ -197,7 +195,6 @@ const employeeState = store({
     initalize: () => {
         DataService.employeeSize().then(res => {
             employeeState.nrAllEmployees = res.data;
-            console.log("Res: " + res.data);
         });
     },
 
