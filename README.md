@@ -3,17 +3,17 @@
 ## Allgemeines
 Unser Projekt ist in 3 Bereichen gegliedert:
 1. UI
-  1. Die UI ist in verschieden Komponenten gegliedert, die in `src/Components` gespeichert sind.
-  2. Die einzelnen Komponenten verwenden je nach Kategorie (Service/Employee) einen State um Daten zu      speichern und Daten zu manipulieren (Siehe 2. Logik)
+  * Die UI ist in verschieden Komponenten gegliedert, die in `src/Components` gespeichert sind.
+  * Die einzelnen Komponenten verwenden je nach Kategorie (Service/Employee) einen State um Daten zu      speichern und Daten zu manipulieren (Siehe 2. Logik)
 2. Logik
-  1. Es gibt eine Trennung zwischen Services und Employees
-  2. Logik befindet sich in `src/State/EmployeeState` oder `src/State/ServiceState`
-  3. Hier werden die Daten für die UI aufbereitet
-  4. Wir verwenden den Statemanager von Risingstack: https://github.com/RisingStack/react-easy-state.      Dadurch speichern wir alle Daten zentral in dem Statemanger und wenn sich hier Daten ändern          werden die Komponenten neu gerendert.
-  5. Die Daten werden von der Datenbank über die Datenschicht geladen (Siehe 3. Datenzugriff)
+  * Es gibt eine Trennung zwischen Services und Employees
+  * Logik befindet sich in `src/State/EmployeeState` oder `src/State/ServiceState`
+  * Hier werden die Daten für die UI aufbereitet
+  * Wir verwenden den Statemanager von Risingstack: https://github.com/RisingStack/react-easy-state.      Dadurch speichern wir alle Daten zentral in dem Statemanger und wenn sich hier Daten ändern          werden die Komponenten neu gerendert.
+  * Die Daten werden von der Datenbank über die Datenschicht geladen (Siehe 3. Datenzugriff)
 3. Datenzugriff 
-  1. Man kann zwischen 2 Datenquellen wählen: Lokal und Datenbank, dazu gibt es 2 DataServices unter      `src/Manager`: `DataService` und `TestDataService`. Der DataService greift dabei auf die              Datenbank zu (IP-Adresse ist über eine Variable leicht veränderbar), wohingegen der                  TestDataService zum einfachen Testen ohne Datenbank gedacht ist (Siehe [## Testing])
-  2. Zum Zugriff auf die Datenbank setzen wir Rest-Requests mittels Axios                                  (https://github.com/axios/axios) ab.
+  * Man kann zwischen 2 Datenquellen wählen: Lokal und Datenbank, dazu gibt es 2 DataServices unter      `src/Manager`: `DataService` und `TestDataService`. Der DataService greift dabei auf die              Datenbank zu (IP-Adresse ist über eine Variable leicht veränderbar), wohingegen der                  TestDataService zum einfachen Testen ohne Datenbank gedacht ist (Siehe [## Testing])
+  * Zum Zugriff auf die Datenbank setzen wir Rest-Requests mittels Axios                                  (https://github.com/axios/axios) ab.
 
 ## Ausführung
 Voraussetzung zum ausführen ist, dass Node.js installiert ist.
