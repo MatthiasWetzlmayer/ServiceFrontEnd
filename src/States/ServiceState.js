@@ -42,18 +42,14 @@ const services = store({
         services.customAlert.alertSeverity = severity;
     },
 
-    disableAlert: () => {
-        services.customAlert.showAlert = false;
-    },
 
     resetAlertAfterAmount: (seconds) => {
         setTimeout(() => {
-            services.disableAlert();
+            services.customAlert.showAlert = false;
         }, seconds);
     },
 
     addService: (serviceDTO) => {
-        services.disableAlert();
         DataService.addService(serviceDTO).then(res => {
 
                 services.showAddService = false;
@@ -73,11 +69,13 @@ const services = store({
             })
             .catch(error => {
                 services.updateAlert(error.response.data.message, "error");
+                services.resetAlertAfterAmount(4000);
             });
+
+            services.updateAlert("Dienst wird angelegt...", "info");
+            services.resetAlertAfterAmount(3000);
     },
     setServiceToEdit: (service) => {
-        services.disableAlert();
-
         if (services.serviceToEdit.id === service.id) {
             services.serviceToEdit = {};
             services.showEditService = false;
@@ -92,7 +90,6 @@ const services = store({
 
     },
     deleteService: (serviceId) => {
-        services.disableAlert();
         if (serviceId === services.serviceToEdit.id) {
             services.serviceToEdit = {};
             services.showEditService = false;
@@ -140,10 +137,13 @@ const services = store({
             })
             .catch(error => {
                 services.updateAlert(error.response.data.message, "error");
+                services.resetAlertAfterAmount(4000);
             });
+
+            services.updateAlert("Dienst wird gelöscht...", "info");
+            services.resetAlertAfterAmount(3000);
     },
     editService: (serviceDTO) => {
-        services.disableAlert();
         DataService.editService(services.serviceToEdit.id, serviceDTO).then(res => {
 
                 for (var i = 0; i < services.services.length; ++i) {
@@ -160,8 +160,10 @@ const services = store({
             })
             .catch(error => {
                 services.updateAlert(error.response.data.message, "error");
+                services.resetAlertAfterAmount(4000);
             });
-
+            services.updateAlert("Dienst wird bearbeitet...", "info");
+            services.resetAlertAfterAmount(3000);
 
     },
     loadServices: (loadOneService) => {
@@ -247,13 +249,9 @@ const services = store({
         }
     },
     filterServices: (searchString) => {
-        services.disableAlert();
-        console.log(privateVars.allServices);
         if (privateVars.allServices.length < 1) {
-            console.log("Set private vars");
             privateVars.allServices = services.services;
         }
-        console.log("SearchString: " + searchString);
         if (searchString.length < 1) {
             services.services = privateVars.allServices;
             privateVars.allServices = [];
