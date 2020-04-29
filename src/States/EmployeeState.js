@@ -1,7 +1,8 @@
 import {
     store
 } from '@risingstack/react-easy-state';
-import DataService from '../Manager/TestDataService';
+import DataService from '../Manager/DataService';
+import services from './ServiceState';
 
 const privateVars = {
     allEmployees: [],
@@ -34,7 +35,7 @@ const employeeState = store({
         employeeState.customAlert.alertSeverity = severity;
     },
 
-  
+
 
     resetAlertAfterAmount: (seconds) => {
         setTimeout(() => {
@@ -56,6 +57,8 @@ const employeeState = store({
                     employeeState.pageNr++;
                     employeeState.min++;
                     employeeState.max++;
+                } else if (employeeState.max === "") {
+                    employeeState.employees.push(res.data);
                 }
 
 
@@ -67,8 +70,8 @@ const employeeState = store({
                 employeeState.resetAlertAfterAmount(4000);
 
             });
-            employeeState.updateAlert("Mitarbeiter wird angelegt", "info");
-            employeeState.resetAlertAfterAmount(3000);
+        employeeState.updateAlert("Mitarbeiter wird angelegt", "info");
+        employeeState.resetAlertAfterAmount(3000);
 
     },
     setEmployeeToEdit: (employee) => {
@@ -100,8 +103,8 @@ const employeeState = store({
                 employeeState.resetAlertAfterAmount(4000);
 
             });
-            employeeState.updateAlert("Mitarbeiter wird bearbeitet", "info");
-            employeeState.resetAlertAfterAmount(3000);
+        employeeState.updateAlert("Mitarbeiter wird bearbeitet", "info");
+        employeeState.resetAlertAfterAmount(3000);
 
     },
 
@@ -112,6 +115,9 @@ const employeeState = store({
                 employeeState.employees = employeeState.employees.filter(x => x.id !== res.data.id);
                 employeeState.updateAlert("Löschen erfolgreich", "success");
                 employeeState.resetAlertAfterAmount(3000);
+
+                let showsAll = employeeState.max === "" ? true : false;
+
 
                 //The Max value can not be more than all Employees in the DB
                 if (parseInt(employeeState.max) > parseInt(employeeState.nrAllEmployees) || employeeState.max === "") {
@@ -137,20 +143,25 @@ const employeeState = store({
                 ) {
                     privateVars.min = employeeState.nrAllEmployees;
                     employeeState.loadEmployees(true);
+                    
+                    //load the employees of the next page if there is enough space on this page
+
                 } else if (parseInt(employeeState.max) < parseInt(employeeState.nrAllEmployees) &&
                     !(parseInt(employeeState.min) === parseInt(employeeState.nrAllEmployees))) {
                     privateVars.min = employeeState.max;
                     employeeState.loadEmployees(true);
                 }
-
+                if (showsAll) {
+                    services.max = "";
+                }
             })
             .catch(error => {
                 employeeState.updateAlert(error.response.data.message, "error");
                 employeeState.resetAlertAfterAmount(4000);
 
             });
-            employeeState.updateAlert("Mitarbeiter wird gelöscht", "info");
-            employeeState.resetAlertAfterAmount(3000);
+        employeeState.updateAlert("Mitarbeiter wird gelöscht", "info");
+        employeeState.resetAlertAfterAmount(3000);
 
 
     },
