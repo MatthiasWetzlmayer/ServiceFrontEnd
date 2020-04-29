@@ -1,5 +1,8 @@
 # DBI-React-Projekt 4B
 
+## Dokumente
+Bericht, Präsentation und Arbeitsaufteilung sind [hier](https://github.com/MatthiasWetzlmayer/ServiceFrontEnd/tree/master/Doks) zu finden.
+
 ## Architektur
 Unser Projekt ist in 3 Bereichen gegliedert:
 1. UI
