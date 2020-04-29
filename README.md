@@ -26,7 +26,7 @@ Wir verwenden XAMPP für die Datenbanken. Beim 1. BackEnd Start muss man zuerst 
 
 ## Ausführung
 Voraussetzung zum Ausführen ist, dass Node.js installiert ist.
-Nach einem erfolgreichen Git-Clone öffnet man ein Terminal und gibt `npm start` ein. Daraufhin öffnet sich ein Browser-Fenster und man kann das Projekt ausführen. (Falls sich kein Fenster öffnet, kann man die Seite unter folgendem Link aufrufen: http://localhost:3000)
+Nach einem erfolgreichen Git-Clone bzw. dem [Download der Zip](https://github.com/MatthiasWetzlmayer/ServiceFrontEnd/releases/tag/v1.0.0) öffnet man ein Terminal und gibt `npm install` ein, sodass man die benötigten Packages und Librarys herunterlädt. Daraufhin kann man mit `npm start` das Projekt starten. Hier öffnet sich ein Browser-Fenster und man kann das Projekt ausführen. (Falls sich kein Fenster öffnet, kann man die Seite unter folgendem Link aufrufen: http://localhost:3000)
 
 ## Testing
 Man kann unser Projekt auch ohne Datenbank ausführen. Dazu muss man den Import des DataService in `SerivceState` und `EmployeeState` von 
