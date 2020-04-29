@@ -1,6 +1,6 @@
 import axios from 'axios';
 const DataService = {
-    ipAddress:"10.0.0.27",
+    ipAddress:"localhost",
     deleteService:(serviceId)=>{
         return axios.delete(`http://${DataService.ipAddress}:8080/services/${serviceId}`);
     },

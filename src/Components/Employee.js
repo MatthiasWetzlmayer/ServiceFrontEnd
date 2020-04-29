@@ -15,7 +15,8 @@ export class Employee extends Component {
         }}>{employeeState.showEditEmployee && employee.id === employeeState.employeeToEdit.id ? "Bearbeiten beenden" : "Bearbeiten"}</button></td>
         <td><button className="button" onClick={() => {
           if (employeeState.employeeToDelete == null || employeeState.employeeToDelete.id !== employee.id) {
-            employeeState.updateAlert(`Achtung! Der Mitarbeiter ${employee.name} könnte Diensten zugewiesen sein!`, `warning`);
+            employeeState.updateAlert(`Achtung! Der Mitarbeiter ${employee.name} könnte Diensten zugewiesen sein! Zum löschen erneut klicken!`, `warning`);
+            employeeState.resetAlertAfterAmount(5000);
             employeeState.employeeToDelete = employee;
           }
           else if (employeeState.employeeToDelete.id === employee.id) {

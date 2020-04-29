@@ -5,7 +5,8 @@ import DataService from '../Manager/DataService';
 
 const privateVars = {
     allServices: [],
-    min: -1
+    min: -1,
+    debugMode: false
 }
 
 const services = store({
@@ -58,10 +59,13 @@ const services = store({
                     services.pageNr = 1;
                     services.min = 1;
                     services.max = 1;
-
+                    //Einfügen auf der aktuellen Seite, wenn noch Platz ist
                 } else if (parseInt(services.max) / parseInt(services.pageNr) < parseInt(services.showEntries)) {
                     services.services.push(res.data);
                     services.max++;
+                    //Einfügen, wenn alle angezeigt werden
+                } else if (services.max === "") {
+                    services.services.push(res.data);
                 }
                 services.updateAlert("Hinzufügen Erfolgreich", "success");
                 services.resetAlertAfterAmount(3000);
@@ -71,8 +75,8 @@ const services = store({
                 services.resetAlertAfterAmount(4000);
             });
 
-            services.updateAlert("Dienst wird angelegt...", "info");
-            services.resetAlertAfterAmount(3000);
+        services.updateAlert("Dienst wird angelegt...", "info");
+        services.resetAlertAfterAmount(3000);
     },
     setServiceToEdit: (service) => {
         if (services.serviceToEdit.id === service.id) {
@@ -100,6 +104,7 @@ const services = store({
                 services.updateAlert("Löschen erfolgreich", "success");
                 services.resetAlertAfterAmount(3000);
 
+                let showsAll = services.max === "" ? true : false;
 
                 //The Max value can not be more than all Services in the DB
                 if (parseInt(services.max) > parseInt(services.nrAllServices) || services.max === "") {
@@ -127,20 +132,23 @@ const services = store({
                     services.loadServices(true);
                 }
                 //load the service of the next page if there is enough space on this page
-                else if (parseInt(services.max) < parseInt(services.nrAllServices)
-                    &&!(parseInt(services.min) === parseInt(services.nrAllServices))) {
+                else if (parseInt(services.max) < parseInt(services.nrAllServices) &&
+                    !(parseInt(services.min) === parseInt(services.nrAllServices))) {
                     privateVars.min = services.max;
                     services.loadServices(true);
                 }
 
+                if(showsAll){
+                    services.max = "";
+                }
             })
             .catch(error => {
                 services.updateAlert(error.response.data.message, "error");
                 services.resetAlertAfterAmount(4000);
             });
 
-            services.updateAlert("Dienst wird gelöscht...", "info");
-            services.resetAlertAfterAmount(3000);
+        services.updateAlert("Dienst wird gelöscht...", "info");
+        services.resetAlertAfterAmount(3000);
     },
     editService: (serviceDTO) => {
         DataService.editService(services.serviceToEdit.id, serviceDTO).then(res => {
@@ -161,8 +169,8 @@ const services = store({
                 services.updateAlert(error.response.data.message, "error");
                 services.resetAlertAfterAmount(4000);
             });
-            services.updateAlert("Dienst wird bearbeitet...", "info");
-            services.resetAlertAfterAmount(3000);
+        services.updateAlert("Dienst wird bearbeitet...", "info");
+        services.resetAlertAfterAmount(3000);
 
     },
     loadServices: (loadOneService) => {
@@ -172,43 +180,65 @@ const services = store({
             services.updateAlert("Keine Dienste in der Datenbank!", "info");
         } else {
 
-            if (services.eventSource) {
-                services.eventSource.close();
-                services.eventSource = null;
-            }
+            if (privateVars.debugMode) {
+                DataService.loadServices(loadOneService ? privateVars.min : services.min, services.max).then(res => {
+                        if (loadOneService) {
+                            services.services.push(res.data[0]);
+                            privateVars.min = -1
+                        } else {
+                            services.services = res.data;
+                        }
+                        if (services.nrAllServices < services.max) {
+                            services.max = services.nrAllServices;
+                        }
 
-            if (loadOneService) {
-                services.eventSource = DataService.loadServices(privateVars.min, services.max);
-                privateVars.min = -1;
-
+                    })
+                    .catch(error => {
+                        if (parseInt(services.nrAllServices) !== 0) {
+                            services.updateAlert(error.response.data.message, "error");
+                        } else {
+                            services.loadServices();
+                        }
+                    });
             } else {
-                services.eventSource = DataService.loadServices(services.min, services.max);
 
-                services.services = [];
-            }
-            let isOpen = false;
 
-            services.eventSource.onopen = e => {
-                if (isOpen) {
+                if (services.eventSource) {
                     services.eventSource.close();
                     services.eventSource = null;
-                    
+                }
+
+                if (loadOneService) {
+                    services.eventSource = DataService.loadServices(privateVars.min, services.max);
+                    privateVars.min = -1;
+
                 } else {
-                    if (parseInt(services.nrAllServices) === 0) {
-                        services.loadServices();
+                    services.eventSource = DataService.loadServices(services.min, services.max);
+
+                    services.services = [];
+                }
+                let isOpen = false;
+
+                services.eventSource.onopen = e => {
+                    if (isOpen) {
+                        services.eventSource.close();
+                        services.eventSource = null;
+
                     } else {
-                        isOpen = true;
+                        if (parseInt(services.nrAllServices) === 0) {
+                            services.loadServices();
+                        } else {
+                            isOpen = true;
+                        }
+                    }
+                }
+                services.eventSource.onmessage = e => {
+                    services.services.push(JSON.parse(e.data));
+                    if (services.nrAllServices < services.max) {
+                        services.max = services.nrAllServices;
                     }
                 }
             }
-            services.eventSource.onmessage = e => {
-                services.services.push(JSON.parse(e.data));
-                if (services.nrAllServices < services.max) {
-                    services.max = services.nrAllServices;
-                }
-            }
-
-      
 
             DataService.loadAllEmployees().then(res => {
                     services.employees = res.data;

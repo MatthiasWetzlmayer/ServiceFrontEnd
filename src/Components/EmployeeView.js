@@ -101,7 +101,7 @@ export class EmployeeView extends Component {
           <div
             className={employeeState.max === "" ? "hide textStyle" : "textStyle"}
           >bis</div>
-          <div>{employeeState.max === "" ? "alle" : employeeState.max}.</div>
+          <div>{employeeState.max === "" ? "alle" : employeeState.max + "."}</div>
           <div
             className={employeeState.max === "" ? "hide textStyle" : "textStyle"}
           >von</div>
