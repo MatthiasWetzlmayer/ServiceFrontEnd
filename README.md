@@ -2,6 +2,7 @@
 
 ## Dokumente
 Bericht, Präsentation und Arbeitsaufteilung sind [hier](https://github.com/MatthiasWetzlmayer/ServiceFrontEnd/tree/master/Doks) zu finden.
+Des weiteren ist unsere Komponentenhierarchie in einer Datei dargestellt und eine Beschreibung für die BackEnds (Schnittstellenbeschreibung)
 
 ## Architektur
 Unser Projekt ist in 3 Bereichen gegliedert:
@@ -47,3 +48,5 @@ const privateVars = {
 }
 ```
 
+## Hello World
+Die Hello World Applikation ist [hier](https://github.com/MatthiasWetzlmayer/ServiceFrontEnd/tree/master/HelloWorld) zu finden.
