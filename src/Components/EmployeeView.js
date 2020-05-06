@@ -38,7 +38,6 @@ export class EmployeeView extends Component {
   }
 
   previousButtonClicked = (e) => {
-    employeeState.disableAlert();
     e.preventDefault();
     if (employeeState.max === employeeState.nrAllEmployees && employeeState.max % employeeState.showEntries !== 0) {
       employeeState.max = parseInt(employeeState.max) - parseInt(employeeState.nrAllEmployees % employeeState.showEntries)
